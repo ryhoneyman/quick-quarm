@@ -1,3 +1,4 @@
 /bin
-/db
 !/bin/.gitkeep
+/db
+!.db/.gitkeep
