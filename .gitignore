@@ -4,3 +4,5 @@
 !/db/.gitkeep
 /source/*
 !/source/.gitkeep
+/etc/*
+!/etc/.gitkeep
