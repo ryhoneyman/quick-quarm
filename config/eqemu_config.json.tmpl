@@ -1,0 +1,53 @@
+{
+  "server": {
+    "zones": {
+      "defaultstatus": "0",
+      "ports": {
+        "low": "7000",
+        "high": "7400"
+      }
+    },
+    "qsdatabase": {
+      "host": "db",
+      "port": "3306",
+      "username": "{{DBUSER}}",
+      "password": "{{DBPASS}}",
+      "db": "{{DBNAME}}"
+    },
+    "chatserver": {
+      "host": "{{HOSTIP}}",
+      "port": "7778"
+    },
+    "mailserver": {
+      "host": "{{HOSTIP}}",
+      "port": "7778"
+    },
+    "world": {
+      "loginserver1": {
+        "port": "5998",
+        "account": "",
+        "password": "",
+        "host": "{{HOSTIP}}"
+      },
+      "tcp": {
+        "host": "{{HOSTIP}}",
+        "port": "9000"
+      },
+      "key": "{{WORLDKEY}}",
+      "shortname": "Quick Quarm EQ",
+      "longname": "Quick Quarm EQ",
+      "address": "{{HOSTIP}}",
+      "localaddress": "{{HOSTIP}}"
+    },
+    "database": {
+      "db": "{{DBNAME}}",
+      "host": "{{HOSTIP}}",
+      "port": "3306",
+      "username": "{{DBUSER}}",
+      "password": "{{DBPASS}}"
+    },
+    "launcher": {
+      "exe": "/app/zone"
+    }
+  }
+}
