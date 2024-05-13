@@ -1,4 +1,6 @@
-/bin
+/bin/*
 !/bin/.gitkeep
-/db
-!.db/.gitkeep
+/db/*
+!/db/.gitkeep
+/source/*
+!/source/.gitkeep
