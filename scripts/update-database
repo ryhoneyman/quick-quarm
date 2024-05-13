@@ -1,0 +1,31 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+DBDIR=$BASEDIR/db
+CONFIGDIR=$BASEDIR/config
+SERVERDIR=$BASEDIR/source/EQMacEmu
+DATADIR=$SERVERDIR/utils/sql/database_full
+
+LATESTDB=$(ls -Art $DATADIR | tail -n 1)
+
+pushd .
+
+cd $BASEDIR/db
+
+tar zxvf $DATADIR/$LATESTDB 
+
+mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/drop_system.sql
+mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/quarm_*.sql
+
+popd

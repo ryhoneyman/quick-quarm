@@ -1,0 +1,23 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+if (( $EUID != 0 )); then
+    echo "Please run as root"
+    exit
+fi
+
+apt update
+apt upgrade
+apt install git build-essential cmake libboost-dev libmariadb-dev liblua5.1-dev uuid-dev mysql-server
+

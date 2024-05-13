@@ -1,0 +1,43 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+DBDIR=$BASEDIR/db
+CONFIGDIR=$BASEDIR/config
+SERVERDIR=$BASEDIR/source/EQMacEmu
+DATADIR=$SERVERDIR/utils/sql/database_full
+
+LATESTDB=$(ls -Art $DATADIR | tail -n 1)
+
+pushd .
+
+cd $DBDIR
+
+tar zxvf $DATADIR/$LATESTDB 
+
+sudo mysql -ve "CREATE DATABASE $DBNAME"
+sudo mysql -ve "CREATE USER '$DBUSER'@'localhost' IDENTIFIED BY '$DBPASS'"
+sudo mysql -ve "GRANT ALL ON $DBNAME.* TO '$DBUSER'@'localhost'"
+sudo mysql -ve "SET GLOBAL sql_mode = ''"
+
+mysql -u$DBUSER -p$DBPASS $DBNAME -e "drop database $DBNAME; create database $DBNAME"
+mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/login_tables_*.sql 
+mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/player_tables_*.sql 
+mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/quarm_*.sql 
+mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/data_tables_*.sql
+mysql -u$DBUSER -p$DBPASS $DBNAME < $SERVERDIR/loginserver/login_util/tblloginserversettings.sql 
+mysql -u$DBUSER -p$DBPASS $DBNAME < $SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql
+mysql -u$DBUSER -p$DBPASS $DBNAME < $CONFIGDIR/launcher_boats.sql 
+mysql -u$DBUSER -p$DBPASS $DBNAME < $CONFIGDIR/auto_create.sql 
+
+popd

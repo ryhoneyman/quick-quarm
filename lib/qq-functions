@@ -1,0 +1,5 @@
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+load_variables() {
+    source $SCRIPTDIR/../etc/.env
+}

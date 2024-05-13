@@ -1,0 +1,29 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+pushd .
+
+cd $BASEDIR/bin
+
+rm $BASEDIR/bin/* 2>&1 | grep -v 'cannot remove .*: Is a directory'
+cp ../source/EQMacEmu/bin/* .
+mkdir -p logs
+mkdir -p shared
+ln -s ../source/Maps
+ln -s ../source/quests
+
+cp ../source/EQMacEmu/loginserver/login_util/*.conf .
+cp ../source/EQMacEmu/utils/patches/*.conf .
+
+popd
