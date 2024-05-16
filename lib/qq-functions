@@ -1,5 +1,102 @@
-SCRIPTDIR=${BASH_SOURCE%/*}
+export SCRIPTDIR=${BASH_SOURCE%/*}
+export QQDIR=$(dirname -- $(realpath $SCRIPTDIR))
+
+export DEFAULT_SERVERREPO='https://github.com/SecretsOTheP/EQMacEmu.git'
+export DEFAULT_DBWORD='quarm'
+export DEFAULT_HOSTIP=$(hostname -I | sed -z 's/[[:space:]]//')
+export DEFAULT_WORLDKEY=$(uuidgen)
+
+export TEMPLATE_EQEMUCONFIG="$QQDIR/files/eqemu_config.json.tmpl"
+export TEMPLATE_LOGININI="$QQDIR/files/login.ini.tmpl"
+
+
+
+eq_account_status() {
+    mysql_exec_as $USER "$MYSQLCS" "UPDATE account SET status = $2 WHERE name = '$1'"
+}
+
+mysql_import() {
+    log "MYSQL" "Running: /usr/bin/mysql < $2 (as $USER)"
+    exec_cmd_as $USER "/usr/bin/mysql $1 < $2" "nolog"
+}
+
+mysql_exec_as() {
+    log "MYSQL" "Executing: $3 (as $1)"
+    exec_cmd_as "$1" "/usr/bin/mysql $2 <<< \"$3\"" "nolog"
+}
+
+exec_cmd_as() {
+    DOLOG=true
+    if [ "$3" == "nolog" ]; then
+        DOLOG=false
+    fi
+    $DOLOG && log "CMD" "Running: $2 (as $1)" 
+    OUTPUT=$(eval sudo -E -u $1 -- $2)
+    RC=$?
+    if [ $RC -ne 0 ]; then
+        $DOLOG && log "CMD" "Failed: ($RC) $2"
+        exit 1
+    fi
+}
 
 load_variables() {
-    source $SCRIPTDIR/../etc/.env
+    source $QQDIR/etc/.env
+    export MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
+}
+
+read_input() {
+    read -p "$1 [$2]: " INPUT
+    if [ -z $INPUT ]; then
+        INPUT=$2
+    fi
+    echo $INPUT
+}
+
+get_setup_options() {
+    local OPTIND
+    OPT_DEBUG=false
+    while getopts ":d" opt ; do
+        case "$opt" in
+            d)
+                OPT_DEBUG=true
+                ;;
+        esac
+    done 
+    shift $((OPTIND-1))
+}
+
+get_eq_options() {
+    local OPTIND
+    EQ_LOGIN=false
+    while getopts ":l:" opt ; do
+        case "$opt" in
+            l)
+                EQ_LOGIN=$OPTARG
+                ;;
+        esac
+    done 
+    shift $((OPTIND-1))
+}
+
+pushd() {
+    command pushd "$@" > /dev/null
+}
+
+popd() {
+    command popd "$@" > /dev/null
+}
+
+exit_if_not_root() {
+    if [ "$EUID" -ne 0 ]
+        then echo "Please run this script as root"
+        exit 9
+    fi
+}
+
+enable_debug() {
+    set -x
+}
+
+log() {
+    echo "[$1] $2"
 }
