@@ -1,0 +1,15 @@
+[Unit]
+Description=EQEmu Login Server
+After=eqemu-shared-memory.service mariadb.service network.target
+Requires=eqemu-shared-memory.service mariadb.service
+PartOf=quick-quarm.target
+
+[Service]
+Type=exec
+User=${QQUSER}
+WorkingDirectory=${QQDIR}/bin
+ExecStart=${QQDIR}/bin/loginserver
+ExecStartPost=/bin/sleep 3
+
+[Install]
+WantedBy=quick-quarm.target

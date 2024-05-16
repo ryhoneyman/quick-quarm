@@ -1,0 +1,15 @@
+[Unit]
+Description=EQEmu Shared Memory
+After=mariadb.service network.target
+Requires=mariadb.service
+PartOf=quick-quarm.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=${QQUSER}
+WorkingDirectory=${QQDIR}/bin
+ExecStart=${QQDIR}/bin/shared_memory
+
+[Install]
+WantedBy=quick-quarm.target

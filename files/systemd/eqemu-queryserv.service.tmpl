@@ -1,0 +1,14 @@
+[Unit]
+Description=EQEmu Query Server
+After=eqemu-shared-memory.service mariadb.service network.target
+Requires=eqemu-shared-memory.service mariadb.service
+PartOf=quick-quarm.target
+
+[Service]
+Type=exec
+User=${QQUSER}
+WorkingDirectory=${QQDIR}/bin
+ExecStart=${QQDIR}/bin/queryserv
+
+[Install]
+WantedBy=quick-quarm.target
