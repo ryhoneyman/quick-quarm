@@ -2,6 +2,7 @@ export SCRIPTDIR=${BASH_SOURCE%/*}
 export QQDIR=$(dirname -- $(realpath $SCRIPTDIR))
 
 export DEFAULT_SERVERREPO='https://github.com/SecretsOTheP/EQMacEmu.git'
+export DEFAULT_DBHOST='localhost'
 export DEFAULT_DBWORD='quarm'
 export DEFAULT_HOSTIP=$(hostname -I | sed -z 's/[[:space:]]//')
 export DEFAULT_WORLDKEY=$(uuidgen)
