@@ -31,17 +31,17 @@ fi
 
 if [ ! -d "$SOURCEDIR/EQMacEmu" ]; then 
     log "SOURCE" "Cloning Server repo..."
-    exec_cmd_as $QQUSER "git clone $SERVERREPO EQMacEmu"
+    exec_cmd_as $QQUSER "git clone $SERVERREPO EQMacEmu 2>/dev/null"
 fi
 
 if [ ! -d "$SOURCEDIR/quests" ]; then 
     log "SOURCE" "Cloning quests repo..."
-    exec_cmd_as $QQUSER "git clone https://github.com/SecretsOTheP/quests.git quests"
+    exec_cmd_as $QQUSER "git clone https://github.com/SecretsOTheP/quests.git quests 2>/dev/null"
 fi
 
 if [ ! -d "$SOURCEDIR/Maps" ]; then 
     log "SOURCE" "Cloning maps repo..."
-    exec_cmd_as $QQUSER "git clone https://github.com/EQMacEmu/Maps.git Maps"
+    exec_cmd_as $QQUSER "git clone https://github.com/EQMacEmu/Maps.git Maps 2>/dev/null"
 fi
 
 popd
