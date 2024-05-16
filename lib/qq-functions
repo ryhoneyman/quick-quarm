@@ -110,5 +110,5 @@ enable_debug() {
 }
 
 log() {
-    echo "[$1] $2"
+    printf "%12s %s\n" "[$1]" "$2"
 }
