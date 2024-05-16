@@ -1,0 +1,25 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables 
+fi
+
+### Main ###=======================================================
+
+printf "\nBeginning update:\n"
+
+. "$QQDIR/scripts/update-source"
+. "$QQDIR/scripts/update-database"
+. "$QQDIR/scripts/build-source"
+. "$QQDIR/scripts/install-bin"
+. "$QQDIR/scripts/update-config"
+
+printf "\n\n===== UPDATED!!! =====\n\nIn order to complete the update, you need to restart the Quick Quarm service.\nKeep in mind that the server \
+will come down, so anyone logged in will be disconnected.\nThe restart command takes a few minutes to finish, so be patient.\n\n \
+* sudo systemctl restart quick-quarm.target\n\n"
