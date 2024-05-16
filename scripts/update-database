@@ -30,10 +30,8 @@ cd $DBDIR
 log "DATABASE" "Extracting latest database files..."
 exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
 
-MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
-
 log "DATABASE" "Setup database and tables..."
-mysql_import "$MYSQLCS" "$DBDIR/drop_system.sql"
-mysql_import "$MYSQLCS" "$DBDIR/quarm_*.sql"
+mysql_import "$DBDIR/drop_system.sql"
+mysql_import "$DBDIR/quarm_*.sql"
 
 popd

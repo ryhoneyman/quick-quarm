@@ -13,17 +13,18 @@ export TEMPLATE_LOGININI="$QQDIR/files/login.ini.tmpl"
 
 
 eq_account_status() {
-    mysql_exec_as $USER "$MYSQLCS" "UPDATE account SET status = $2 WHERE name = '$1'"
+    mysql_exec_as $USER "UPDATE account SET status = $2 WHERE name = '$1'"
 }
 
 mysql_import() {
-    log "MYSQL" "Running: /usr/bin/mysql < $2 (as $USER)"
-    exec_cmd_as $USER "/usr/bin/mysql $1 < $2" "nolog"
+    log "MYSQL" "Importing: $DBNAME < $1"
+    exec_cmd_as $USER "/usr/bin/mysql $MYSQLCS < $1" "nolog"
 }
 
 mysql_exec_as() {
-    log "MYSQL" "Executing: $3 (as $1)"
-    exec_cmd_as "$1" "/usr/bin/mysql $2 <<< \"$3\"" "nolog"
+    log "MYSQL" "Executing: $2 (as $1)"
+    CONNECT_STRING=$([ "$1" = "root" ] && echo "" || echo "$MYSQLCS")
+    exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog"
 }
 
 exec_cmd_as() {
@@ -38,6 +39,13 @@ exec_cmd_as() {
         $DOLOG && log "CMD" "Failed: ($RC) $2"
         exit 1
     fi
+}
+
+write_variables() {
+    ENVFILE=$QQDIR/etc/.env
+
+    printf "\nWriting configuration to $ENVFILE\n"
+    exec_cmd_as $QQUSER "printf \"export QQDIR='$QQDIR'\nexport QQUSER='$QQUSER'\nexport SERVERREPO='$SERVERREPO'\nexport DBHOST=$DBHOST\nexport DBNAME=$DBNAME\nexport DBUSER=$DBUSER\nexport DBPASS=$DBPASS\nexport HOSTIP=$HOSTIP\nexport WORLDKEY=$WORLDKEY\" > $ENVFILE" "nolog"
 }
 
 load_variables() {

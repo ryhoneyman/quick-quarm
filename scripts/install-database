@@ -28,16 +28,14 @@ cd $DBDIR
 log "DATABASE" "Extracting latest database files..."
 exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
 
-MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
-
 log "DATABASE" "Setup database and tables..."
-mysql_exec_as "root" "" "DROP DATABASE IF EXISTS $DBNAME; CREATE DATABASE $DBNAME"
-mysql_import "$MYSQLCS" "$DBDIR/login_tables_*.sql"
-mysql_import "$MYSQLCS" "$DBDIR/player_tables_*.sql"
-mysql_import "$MYSQLCS" "$DBDIR/quarm_*.sql"
-mysql_import "$MYSQLCS" "$DBDIR/data_tables_*.sql"
-mysql_import "$MYSQLCS" "$SERVERDIR/loginserver/login_util/tblloginserversettings.sql"
-mysql_import "$MYSQLCS" "$SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql"
-mysql_import "$MYSQLCS" "$FILESDIR/update_settings.sql"
+mysql_exec_as "root" "DROP DATABASE IF EXISTS $DBNAME; CREATE DATABASE $DBNAME"
+mysql_import "$DBDIR/login_tables_*.sql"
+mysql_import "$DBDIR/player_tables_*.sql"
+mysql_import "$DBDIR/quarm_*.sql"
+mysql_import "$DBDIR/data_tables_*.sql"
+mysql_import "$SERVERDIR/loginserver/login_util/tblloginserversettings.sql"
+mysql_import "$SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql"
+mysql_import "$FILESDIR/update_settings.sql"
 
 popd
