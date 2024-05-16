@@ -12,6 +12,8 @@ fi
 
 ### Main ###=======================================================
 
+get_options "$@"
+
 printf "\nBeginning update:\n"
 
 . "$QQDIR/scripts/update-source"

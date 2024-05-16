@@ -12,7 +12,7 @@ fi
 
 ### Main ###=======================================================
 
-get_setup_options "$@"
+get_options "$@"
 
 if [ "$EUID" -ne 0 ]
     then echo "Please run setup as root"
@@ -51,6 +51,8 @@ DBUSER=$(read_input "Database username" "$DBUSER")
 DBPASS=$(read_input "Database password" "$DBPASS")
 HOSTIP=$(read_input "Host address" "$HOSTIP")
 
+DBEXISTS=$(mysql_db_exists $DBNAME);
+
 if $OPT_DEBUG; then 
     enable_debug
 fi
@@ -62,7 +64,14 @@ printf "\nBeginning setup:\n"
 
 . "$QQDIR/scripts/install-deps"
 . "$QQDIR/scripts/download-source"
-. "$QQDIR/scripts/install-database"
+
+if [ -z "$DBEXISTS" ]; then
+    . "$QQDIR/scripts/install-database"
+else 
+    log "DATABASE" "Database $DBNAME already exists, updating..."
+    . "$QQDIR/scripts/update-database"
+fi
+
 . "$QQDIR/scripts/build-source"
 . "$QQDIR/scripts/install-bin"
 . "$QQDIR/scripts/update-config"
