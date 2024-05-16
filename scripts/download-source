@@ -30,7 +30,7 @@ if [ -z "$SERVERREPO" ]; then
 fi
 
 if [ ! -d "$SOURCEDIR/EQMacEmu" ]; then 
-    log "SOURCE" "Cloning Server repo..."
+    log "SOURCE" "Cloning server repo..."
     exec_cmd_as $QQUSER "git clone $SERVERREPO EQMacEmu 2>/dev/null"
 fi
 
