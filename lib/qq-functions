@@ -40,8 +40,11 @@ exec_cmd_as() {
 }
 
 load_variables() {
-    source $QQDIR/etc/.env
-    export MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
+    ENVFILE="$QQDIR/etc/.env"
+    if [ -f $ENVFILE ]; then
+        source $ENVFILE
+        export MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
+    fi
 }
 
 read_input() {
