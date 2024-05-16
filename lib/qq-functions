@@ -27,9 +27,14 @@ mysql_exec_as() {
     exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog"
 }
 
+mysql_db_exists() {
+    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'")
+    echo $EXISTS
+}
+
 exec_cmd_as() {
     DOLOG=true
-    if [ "$3" == "nolog" ]; then
+    if [ "$3" == "nolog" ] || [ "$OPT_NOLOG" = true ]; then
         DOLOG=false
     fi
     $DOLOG && log "CMD" "Running: $2 (as $1)" 
@@ -64,13 +69,17 @@ read_input() {
     echo $INPUT
 }
 
-get_setup_options() {
+get_options() {
     local OPTIND
-    OPT_DEBUG=false
-    while getopts ":d" opt ; do
+    export OPT_DEBUG=false
+    export OPT_NOLOG=true
+    while getopts ":d:v" opt ; do
         case "$opt" in
             d)
-                OPT_DEBUG=true
+                export OPT_DEBUG=true
+                ;;
+            v)
+                export OPT_NOLOG=false
                 ;;
         esac
     done 
