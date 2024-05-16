@@ -7,7 +7,7 @@
   <li>Change to the quick-quarm repo directory and run sudo ./scripts/setup
 </ul>
 
-<code>
+<pre>
 user@host:~/quick-quarm$ sudo ./scripts/setup
 
 Detected /home/user/quick-quarm as Quick Quarm home (user: user)
@@ -26,4 +26,4 @@ Database password [quarm]:
 Host address [192.168.1.100]:
 
 Writing configuration to /home/user/quick-quarm/etc/.env
-</code>
+</pre>
