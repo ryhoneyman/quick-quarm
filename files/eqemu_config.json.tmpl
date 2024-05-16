@@ -8,18 +8,18 @@
       }
     },
     "qsdatabase": {
-      "host": "db",
+      "host": "${DBHOST}",
       "port": "3306",
-      "username": "{{DBUSER}}",
-      "password": "{{DBPASS}}",
-      "db": "{{DBNAME}}"
+      "username": "${DBUSER}",
+      "password": "${DBPASS}",
+      "db": "${DBNAME}"
     },
     "chatserver": {
-      "host": "{{HOSTIP}}",
+      "host": "${HOSTIP}",
       "port": "7778"
     },
     "mailserver": {
-      "host": "{{HOSTIP}}",
+      "host": "${HOSTIP}",
       "port": "7778"
     },
     "world": {
@@ -27,27 +27,27 @@
         "port": "5998",
         "account": "",
         "password": "",
-        "host": "{{HOSTIP}}"
+        "host": "${HOSTIP}"
       },
       "tcp": {
-        "host": "{{HOSTIP}}",
+        "host": "${HOSTIP}",
         "port": "9000"
       },
-      "key": "{{WORLDKEY}}",
-      "shortname": "Quick Quarm EQ",
+      "key": "${WORLDKEY}",
+      "shortname": "QuickQuarm",
       "longname": "Quick Quarm EQ",
-      "address": "{{HOSTIP}}",
-      "localaddress": "{{HOSTIP}}"
+      "address": "${HOSTIP}",
+      "localaddress": "${HOSTIP}"
     },
     "database": {
-      "db": "{{DBNAME}}",
-      "host": "{{HOSTIP}}",
+      "db": "${DBNAME}",
+      "host": "${DBHOST}",
       "port": "3306",
-      "username": "{{DBUSER}}",
-      "password": "{{DBPASS}}"
+      "username": "${DBUSER}",
+      "password": "${DBPASS}"
     },
     "launcher": {
-      "exe": "/app/zone"
+      "exe": "${LAUNCHEREXE}"
     }
   }
 }

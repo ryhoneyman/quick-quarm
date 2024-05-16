@@ -1,9 +1,9 @@
 [database]
-host = localhost
+host = ${DBHOST}
 port = 3306
-db = {{DBNAME}}
-user = {{DBUSER}}
-password = {{DBPASS}}
+db = ${DBNAME}
+user = ${DBUSER}
+password = ${DBPASS}
 subsystem = MySQL
 
 [options]
@@ -18,8 +18,8 @@ world_trace = FALSE
 dump_packets_in = FALSE
 dump_packets_out = FALSE
 listen_port = 5998
-local_network = {{HOSTIP}}
-network_ip = {{HOSTIP}}
+local_network = ${HOSTIP}
+network_ip = ${HOSTIP}
 salt = randomstring
 
 [security]
