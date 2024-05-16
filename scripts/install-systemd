@@ -21,9 +21,9 @@ log "SYSTEMD" "Installing Quick Quarm service"
 for tmplfile in $SYSTEMDTEMPLATEDIR/*.tmpl; do
     filename=$(basename "$tmplfile" .tmpl)
     log "SYSTEMD" "Service $filename installing..."
-    exec_cmd_as "root" "envsubst < $tmplfile > $SYSTEMDLIBDIR/$filename"
+    exec_cmd_as "root" "envsubst < $tmplfile > $SYSTEMDLIBDIR/$filename" "nolog"
 done
 
 log "SYSTEMD" "Enabling Quick Quarm service"
-exec_cmd_as "root" "/usr/bin/systemctl enable --now quick-quarm.target"
+exec_cmd_as "root" "/usr/bin/systemctl enable --now quick-quarm.target" "nolog"
 
