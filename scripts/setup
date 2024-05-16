@@ -63,13 +63,13 @@ printf "export QQDIR='$QQDIR'\nexport QQUSER='$QQUSER'\nexport SERVERREPO='$SERV
 
 printf "\nBeginning setup:\n"
 
-#. "$QQDIR/scripts/install-deps"
-#. "$QQDIR/scripts/download-source"
-#. "$QQDIR/scripts/install-database"
-#. "$QQDIR/scripts/build-source"
-#. "$QQDIR/scripts/install-bin"
-#. "$QQDIR/scripts/update-config"
-#. "$QQDIR/scripts/install-systemd"
+. "$QQDIR/scripts/install-deps"
+. "$QQDIR/scripts/download-source"
+. "$QQDIR/scripts/install-database"
+. "$QQDIR/scripts/build-source"
+. "$QQDIR/scripts/install-bin"
+. "$QQDIR/scripts/update-config"
+. "$QQDIR/scripts/install-systemd"
 
 printf "\n\n===== DONE!!! =====\n\nCongratulations! Everything completed successfully, and you're one step closer to your own Quarm server.\n\n\
 Next Steps:\n\n * Download the TAKP v2.2 Client (or copy your existing TAKP folder) to another separate folder from your production Quarm install \
