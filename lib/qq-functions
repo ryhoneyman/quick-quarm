@@ -22,13 +22,13 @@ mysql_import() {
 }
 
 mysql_exec_as() {
-    log "MYSQL" "Executing: $2 (as $1)"
+    #log "MYSQL" "Executing: $2 (as $1)"
     CONNECT_STRING=$([ "$1" = "root" ] && echo "" || echo "$MYSQLCS")
     exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog"
 }
 
 mysql_db_exists() {
-    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'" "nolog")
+    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'")
     echo $EXISTS
 }
 
