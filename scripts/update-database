@@ -30,7 +30,7 @@ cd $DBDIR
 log "DATABASE" "Extracting latest database files..."
 exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
 
-log "DATABASE" "Setup database and tables..."
+log "DATABASE" "Update database and tables..."
 mysql_import "$DBDIR/drop_system.sql"
 mysql_import "$DBDIR/quarm_*.sql"
 
