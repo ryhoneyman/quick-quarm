@@ -28,7 +28,7 @@ mysql_exec_as() {
 }
 
 mysql_db_exists() {
-    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'")
+    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'" "nolog")
     echo $EXISTS
 }
 
