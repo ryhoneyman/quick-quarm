@@ -22,7 +22,6 @@ mysql_import() {
 }
 
 mysql_exec_as() {
-    #log "MYSQL" "Executing: $2 (as $1)"
     CONNECT_STRING=$([ "$1" = "root" ] && echo "" || echo "$MYSQLCS")
     exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog"
 }
@@ -34,7 +33,7 @@ mysql_db_exists() {
 
 exec_cmd_as() {
     DOLOG=true
-    if [ "$3" == "nolog" ] || [ "$OPT_NOLOG" = true ]; then
+    if [ "$3" == "nolog" ] || [ "$OPT_VERBOSE" = false ]; then
         DOLOG=false
     fi
     $DOLOG && log "CMD" "Running: $2 (as $1)" 
@@ -72,14 +71,14 @@ read_input() {
 get_options() {
     local OPTIND
     export OPT_DEBUG=false
-    export OPT_NOLOG=true
+    export OPT_VERBOSE=false
     while getopts ":d:v" opt ; do
         case "$opt" in
             d)
                 export OPT_DEBUG=true
                 ;;
             v)
-                export OPT_NOLOG=false
+                export OPT_VERBOSE=true
                 ;;
         esac
     done 
