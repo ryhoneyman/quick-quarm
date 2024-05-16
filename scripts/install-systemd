@@ -1,0 +1,29 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+exit_if_not_root
+
+SYSTEMDTEMPLATEDIR="$QQDIR/files/systemd"
+SYSTEMDLIBDIR="/lib/systemd/system"
+
+log "SYSTEMD" "Installing Quick Quarm service"
+for tmplfile in $SYSTEMDTEMPLATEDIR/*.tmpl; do
+    filename=$(basename "$tmplfile" .tmpl)
+    log "SYSTEMD" "Service $filename installing..."
+    exec_cmd_as "root" "envsubst < $tmplfile > $SYSTEMDLIBDIR/$filename"
+done
+
+log "SYSTEMD" "Enabling Quick Quarm service"
+exec_cmd_as "root" "/usr/bin/systemctl enable --now quick-quarm.target"
+

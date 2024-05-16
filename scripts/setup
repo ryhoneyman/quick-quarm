@@ -1,0 +1,79 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables 
+fi
+
+### Main ###=======================================================
+
+get_setup_options "$@"
+
+if [ "$EUID" -ne 0 ]
+    then echo "Please run setup as root"
+    exit
+fi
+
+# Get current variables or their defaults
+QQUSER=$([ ! -z "${QQUSER}" ] && echo "$QQUSER" || echo "$SUDO_USER")
+SERVERREPO=$([ ! -z "${SERVERREPO}" ] && echo "$SERVERREPO" || echo "$DEFAULT_SERVERREPO")
+DBHOST=$([ ! -z "${DBHOST}" ] && echo "$DBHOST" || echo "$DEFAULT_DBHOST")
+DBNAME=$([ ! -z "${DBNAME}" ] && echo "$DBNAME" || echo "$DEFAULT_DBWORD")
+DBUSER=$([ ! -z "${DBUSER}" ] && echo "$DBUSER" || echo "$DEFAULT_DBWORD")
+DBPASS=$([ ! -z "${DBPASS}" ] && echo "$DBPASS" || echo "$DEFAULT_DBWORD")
+HOSTIP=$([ ! -z "${HOSTIP}" ] && echo "$HOSTIP" || echo "$DEFAULT_HOSTIP")
+WORLDKEY=$([ ! -z "${WORLDKEY}" ] && echo "$WORLDKEY" || echo "$DEFAULT_WORLDKEY")
+
+if $OPT_DEBUG; then
+    printf "\n========== DEBUG is ENABLED! ==========\n\n"
+fi
+
+printf "
+Detected $QQDIR as Quick Quarm home (user: $QQUSER) 
+
+The defaults are a great starting point, so it's safe to accept them as is to get up and running. 
+However, if you have a cloned repo of SecretsOTheP/EQMacEmu that you are using for development, feel free to use that instead. 
+
+If you are using your own repo, make sure you've setup your git SSH key, and git username/email before continuing.
+
+"
+# Obtain user input variables, supplying the current variables as default options
+QQUSER=$(read_input "Install user" "$QQUSER")
+SERVERREPO=$(read_input "EQMacEmu repository" "$SERVERREPO")
+DBHOST=$(read_input "Database host" "$DBHOST")
+DBNAME=$(read_input "Database name" "$DBNAME")
+DBUSER=$(read_input "Database username" "$DBUSER")
+DBPASS=$(read_input "Database password" "$DBPASS")
+HOSTIP=$(read_input "Host address" "$HOSTIP")
+
+if $OPT_DEBUG; then 
+    enable_debug
+fi
+
+ENVFILE=$QQDIR/etc/.env
+
+printf "\nWriting configuration to $ENVFILE\n"
+
+printf "export QQDIR='$QQDIR'\nexport QQUSER='$QQUSER'\nexport SERVERREPO='$SERVERREPO'\nexport DBHOST=$DBHOST\nexport DBNAME=$DBNAME\nexport DBUSER=$DBUSER\nexport DBPASS=$DBPASS\nexport HOSTIP=$HOSTIP\nexport WORLDKEY=$WORLDKEY" > $ENVFILE
+
+printf "\nBeginning setup:\n"
+
+#. "$QQDIR/scripts/install-deps"
+#. "$QQDIR/scripts/download-source"
+#. "$QQDIR/scripts/install-database"
+#. "$QQDIR/scripts/build-source"
+#. "$QQDIR/scripts/install-bin"
+#. "$QQDIR/scripts/update-config"
+#. "$QQDIR/scripts/install-systemd"
+
+printf "\n\n===== DONE!!! =====\n\nCongratulations! Everything completed successfully, and you're one step closer to your own Quarm server.\n\n\
+Next Steps:\n\n * Download the TAKP v2.2 Client (or copy your existing TAKP folder) to another separate folder from your production Quarm install \
+(if present).\n * Edit the file eqhost.txt file and change loginserver.takproject.net:6000 to $HOSTIP:6000\n * Start your client (run as \
+Administrator)\n * Login as whatever username/password you want to use (this will fail and is expected).  Just enter the exact same login information \
+again.\n * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.\n * This first user is not \
+flagged as a GM, so you need to run $QQDIR/scripts/eq-makegm -l LOGINACCOUNT to receive GM powers.\n\n"

@@ -12,20 +12,28 @@ fi
 
 ### Main ###=======================================================
 
-DBDIR=$BASEDIR/db
-CONFIGDIR=$BASEDIR/config
-SERVERDIR=$BASEDIR/source/EQMacEmu
+DBDIR=$QQDIR/db
+SERVERDIR=$QQDIR/source/EQMacEmu
 DATADIR=$SERVERDIR/utils/sql/database_full
 
 LATESTDB=$(ls -Art $DATADIR | tail -n 1)
 
 pushd .
 
-cd $BASEDIR/db
+if [ ! -d "$DBDIR" ]; then
+    log "DATABASE" "Directory $DBDIR doesn't exist"
+    exit 1
+fi
 
-tar zxvf $DATADIR/$LATESTDB 
+cd $DBDIR
 
-mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/drop_system.sql
-mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/quarm_*.sql
+log "DATABASE" "Extracting latest database files..."
+exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
+
+MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
+
+log "DATABASE" "Setup database and tables..."
+mysql_import "$MYSQLCS" "$DBDIR/drop_system.sql"
+mysql_import "$MYSQLCS" "$DBDIR/quarm_*.sql"
 
 popd

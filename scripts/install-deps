@@ -12,12 +12,19 @@ fi
 
 ### Main ###=======================================================
 
-if (( $EUID != 0 )); then
-    echo "Please run as root"
-    exit
-fi
+exit_if_not_root
 
-apt update
-apt upgrade
-apt install git build-essential cmake libboost-dev libmariadb-dev liblua5.1-dev uuid-dev mysql-server
+export LC_ALL=C
+
+log "INSTALL" "Updating system..."
+exec_cmd_as "root" "/usr/bin/apt-get update"
+log "INSTALL" "Upgrading system..."
+exec_cmd_as "root" "/usr/bin/apt-get -y upgrade"
+log "INSTALL" "Installing dependencies..."
+exec_cmd_as "root" "/usr/bin/apt-get -y install git build-essential cmake libboost-dev libmariadb-dev liblua5.1-dev uuid-dev mariadb-server"
+
+log "INSTALL" "Setting up MySQL user..."
+mysql_exec_as "root" "" "DROP USER IF EXISTS '$DBUSER'@'%'; CREATE USER '$DBUSER'@'%' IDENTIFIED BY '$DBPASS'; GRANT ALL ON $DBNAME.* TO '$DBUSER'@'%'"
+
+
 

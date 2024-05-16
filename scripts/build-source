@@ -1,0 +1,34 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+pushd .
+
+SERVERDIR="$QQDIR/source/EQMacEmu"
+
+if [ ! -d "$SERVERDIR" ]; then
+    log "BUILD" "Directory $SOURCEDIR doesn't exist"
+    exit 1
+fi
+
+cd $SERVERDIR
+
+NPROC=$(nproc)
+
+log "BUILD" "Generating make files..."
+exec_cmd_as $QQUSER "cmake -DCMAKE_CXX_FLAGS='-w -fcompare-debug-second' -G 'Unix Makefiles' ."
+
+log "BUILD" "Starting build with $NPROC threads... (this may take some time for the initial build)"
+exec_cmd_as $QQUSER "make -j$NPROC"
+
+popd

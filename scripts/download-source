@@ -1,0 +1,48 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+SOURCEDIR="$QQDIR/source"
+
+mkdir -p $SOURCEDIR
+
+if [ ! -d "$SOURCEDIR" ]; then
+    log "SOURCE" "Directory $SOURCEDIR doesn't exist"
+    exit 1
+fi
+
+pushd .
+
+cd $SOURCEDIR
+
+if [ -z "$SERVERREPO" ]; then 
+    SERVERREPO=$DEFAULT_SERVERREPO
+fi
+
+if [ ! -d "$SOURCEDIR/EQMacEmu" ]; then 
+    log "SOURCE" "Cloning Server repo..."
+    exec_cmd_as $QQUSER "git clone $SERVERREPO EQMacEmu"
+fi
+
+if [ ! -d "$SOURCEDIR/quests" ]; then 
+    log "SOURCE" "Cloning quests repo..."
+    exec_cmd_as $QQUSER "git clone https://github.com/SecretsOTheP/quests.git quests"
+fi
+
+if [ ! -d "$SOURCEDIR/Maps" ]; then 
+    log "SOURCE" "Cloning maps repo..."
+    exec_cmd_as $QQUSER "git clone https://github.com/EQMacEmu/Maps.git Maps"
+fi
+
+popd
+

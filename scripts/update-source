@@ -12,17 +12,21 @@ fi
 
 ### Main ###=======================================================
 
-mkdir -p $BASEDIR/source
+log "SOURCE" "Verifying source directory exists"
+exec_cmd_as $QQUSER "mkdir -p $QQDIR/source"
 
 pushd .
 
-cd $BASEDIR/source/EQMacEmu
-git pull
+log "SOURCE" "Updating server repo"
+cd $QQDIR/source/EQMacEmu
+exec_cmd_as $QQUSER "git pull"
 
-cd $BASEDIR/source/quests
-git pull
+log "SOURCE" "Updating quests repo"
+cd $QQDIR/source/quests
+exec_cmd_as $QQUSER "git pull"
 
-cd $BASEDIR/source/Maps
-git pull
+log "SOURCE" "Updating maps repo"
+cd $QQDIR/source/Maps
+exec_cmd_as $QQUSER "git pull"
 
 popd

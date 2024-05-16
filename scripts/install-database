@@ -12,9 +12,11 @@ fi
 
 ### Main ###=======================================================
 
-DBDIR=$BASEDIR/db
-CONFIGDIR=$BASEDIR/config
-SERVERDIR=$BASEDIR/source/EQMacEmu
+exit_if_not_root
+
+DBDIR=$QQDIR/db
+FILESDIR=$QQDIR/files
+SERVERDIR=$QQDIR/source/EQMacEmu
 DATADIR=$SERVERDIR/utils/sql/database_full
 
 LATESTDB=$(ls -Art $DATADIR | tail -n 1)
@@ -23,21 +25,19 @@ pushd .
 
 cd $DBDIR
 
-tar zxvf $DATADIR/$LATESTDB 
+log "DATABASE" "Extracting latest database files..."
+exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
 
-sudo mysql -ve "CREATE DATABASE $DBNAME"
-sudo mysql -ve "CREATE USER '$DBUSER'@'localhost' IDENTIFIED BY '$DBPASS'"
-sudo mysql -ve "GRANT ALL ON $DBNAME.* TO '$DBUSER'@'localhost'"
-sudo mysql -ve "SET GLOBAL sql_mode = ''"
+MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
 
-mysql -u$DBUSER -p$DBPASS $DBNAME -e "drop database $DBNAME; create database $DBNAME"
-mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/login_tables_*.sql 
-mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/player_tables_*.sql 
-mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/quarm_*.sql 
-mysql -u$DBUSER -p$DBPASS $DBNAME < $DBDIR/data_tables_*.sql
-mysql -u$DBUSER -p$DBPASS $DBNAME < $SERVERDIR/loginserver/login_util/tblloginserversettings.sql 
-mysql -u$DBUSER -p$DBPASS $DBNAME < $SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql
-mysql -u$DBUSER -p$DBPASS $DBNAME < $CONFIGDIR/launcher_boats.sql 
-mysql -u$DBUSER -p$DBPASS $DBNAME < $CONFIGDIR/auto_create.sql 
+log "DATABASE" "Setup database and tables..."
+mysql_exec_as "root" "" "DROP DATABASE IF EXISTS $DBNAME; CREATE DATABASE $DBNAME"
+mysql_import "$MYSQLCS" "$DBDIR/login_tables_*.sql"
+mysql_import "$MYSQLCS" "$DBDIR/player_tables_*.sql"
+mysql_import "$MYSQLCS" "$DBDIR/quarm_*.sql"
+mysql_import "$MYSQLCS" "$DBDIR/data_tables_*.sql"
+mysql_import "$MYSQLCS" "$SERVERDIR/loginserver/login_util/tblloginserversettings.sql"
+mysql_import "$MYSQLCS" "$SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql"
+mysql_import "$MYSQLCS" "$FILESDIR/update_settings.sql"
 
 popd

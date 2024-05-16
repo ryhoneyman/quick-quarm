@@ -14,16 +14,31 @@ fi
 
 pushd .
 
-cd $BASEDIR/bin
+BINDIR="$QQDIR/bin"
 
-rm $BASEDIR/bin/* 2>&1 | grep -v 'cannot remove .*: Is a directory'
-cp ../source/EQMacEmu/bin/* .
-mkdir -p logs
-mkdir -p shared
-ln -s ../source/Maps
-ln -s ../source/quests
+if [ ! -d "$BINDIR" ]; then
+    log "SOURCE" "Directory $BINDIR doesn't exist"
+    exit 1
+fi
 
-cp ../source/EQMacEmu/loginserver/login_util/*.conf .
-cp ../source/EQMacEmu/utils/patches/*.conf .
+cd $BINDIR
+
+log "INSTALL" "Cleaning up bin directory"
+exec_cmd_as $QQUSER "find $BINDIR -type f ! -name .gitkeep -delete"
+
+log "INSTALL" "Copy build binaries to bin directory"
+exec_cmd_as $QQUSER "cp ../source/EQMacEmu/bin/* ."
+
+log "INSTALL" "Create logs and shared directories"
+exec_cmd_as $QQUSER "mkdir -p logs"
+exec_cmd_as $QQUSER "mkdir -p shared"
+
+log "INSTALL" "Link quests and maps directories"
+exec_cmd_as $QQUSER "ln -fs ../source/Maps"
+exec_cmd_as $QQUSER "ln -fs ../source/quests"
+
+log "INSTALL" "Copy in auxillary configuration files"
+exec_cmd_as $QQUSER "cp ../source/EQMacEmu/loginserver/login_util/*.conf ."
+exec_cmd_as $QQUSER "cp ../source/EQMacEmu/utils/patches/*.conf ."
 
 popd
