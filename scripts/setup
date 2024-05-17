@@ -68,7 +68,7 @@ HOSTIP=$(read_input "Host address" "$HOSTIP")
 
 DBEXISTS=$(mysql_db_exists);
 
-if [ $DBEXISTS ]; then
+if [ $DBEXISTS ] && [ "$OPT_CLEAN" = false ]; then
     printf "\nDatabase '$DBNAME' already exists, will not destroy it\n"
 fi
 
