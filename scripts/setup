@@ -48,7 +48,6 @@ if [ "$OPT_OPTS" = true ]; then
 fi
 
 printf "
-
 Detected $QQDIR as Quick Quarm home (user: $QQUSER)
 
 The defaults are a great starting point, so it's safe to accept them as is to get up and running.
