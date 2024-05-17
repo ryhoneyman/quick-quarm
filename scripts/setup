@@ -47,10 +47,16 @@ if [ "$OPT_OPTS" = true ]; then
     printf "\n"
 fi
 
-printf "\nDetected $QQDIR as Quick Quarm home (user: $QQUSER)\n\n\
-The defaults are a great starting point, so it's safe to accept them as is to get up and running.\n\
-However, if you have a cloned repo of SecretsOTheP/EQMacEmu that you are using for development, feel free to use that instead.\n\n\
-If you are using your own repo, make sure you've setup your git SSH key, and git username/email BEFORE continuing.\n\n"
+printf "
+
+Detected $QQDIR as Quick Quarm home (user: $QQUSER)
+
+The defaults are a great starting point, so it's safe to accept them as is to get up and running.
+However, if you have a cloned repo of SecretsOTheP/EQMacEmu that you are using for development, feel free to use that instead.
+
+If you are using your own repo, make sure you've setup your git SSH key, and git username/email BEFORE continuing.
+
+"
 
 # Obtain user input variables, supplying the current variables as default options
 QQUSER=$(read_input "Install user" "$QQUSER")
@@ -87,9 +93,19 @@ fi
 . "$QQDIR/scripts/update-config"
 . "$QQDIR/scripts/install-systemd"
 
-printf "\n\n===== DONE!!! =====\n\nCongratulations! Everything completed successfully, and you're one step closer to your own Quarm server.\n\n\
-Next Steps:\n\n * Download the TAKP v2.2 Client (or copy your existing TAKP folder) to another separate folder from your production Quarm install \
-(if present).\n * In the folder, edit the file eqhost.txt file and change loginserver.takproject.net:6000 to $HOSTIP:6000\n * Start your client (run as \
-Administrator)\n * Login as whatever username/password you want to use (this will fail and is expected).  Click Ok, and hit [ENTER] \
-again.\n * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.\n * On your Quick Quarm host, \
-run ./scripts/eq-makegm -l LOGINACCOUNT\n * If you are already logged in, enter '/sit', '/camp login', then log back in to activate GM powers.\n\n"
+printf "
+===== DONE!!! =====
+
+Congratulations! Everything completed successfully, and you're one step closer to your own Quarm server.
+
+Next Steps:
+
+ * New users: Download the TAKP v2.2 Client and the associated PQ package zip file from PQ Discord #server-files
+ * Existing users: Copy your existing TAKP folder to another separate folder from your normal PQ install.
+ * Edit the file eqhost.txt file and change loginserver.takproject.net:6000 to 192.168.1.100:6000
+ * Start your client (run as Administrator, and set compatibility options if needed)
+ * Login as whatever username/password you want to use (this will fail and is expected).  Click Ok, and hit [ENTER] again.
+ * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.
+ * On your Quick Quarm host, run ./scripts/eq-makegm -l LOGINACCOUNT
+ * If you are already logged in, enter '/sit', '/camp login', then log back in to activate GM powers.
+ "
