@@ -93,7 +93,7 @@ Next Steps:
  * Login as whatever username/password you want to use (this will fail and is expected).  Click Ok, and hit [ENTER] again.
  * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.
  * On your Quick Quarm host, run ./scripts/eq-makegm -l LOGINACCOUNT
- * While in-game enter '/sit', '/camp login', then log back in to activate GM powers.
+ * If you are already logged in, enter '/sit', '/camp login', then log back in to activate GM powers.
 </pre>
 
 <h3>What It Does</h3>
