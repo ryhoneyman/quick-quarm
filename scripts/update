@@ -14,6 +14,17 @@ fi
 
 get_options "$@"
 
+DBEXISTS=$(mysql_db_exists)
+
+if [ ! $DBEXISTS ]; then
+    printf "\nDatabase '$DBNAME' does not exist, did you run setup?\n"
+    exit
+fi
+
+if [ "$OPT_DEBUG" = true ]; then 
+    enable_debug
+fi
+
 printf "\nBeginning update:\n"
 
 . "$QQDIR/scripts/update-source"

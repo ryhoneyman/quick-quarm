@@ -13,39 +13,65 @@ export TEMPLATE_LOGININI="$QQDIR/files/login.ini.tmpl"
 
 
 eq_account_status() {
-    mysql_exec_as $USER "UPDATE account SET status = $2 WHERE name = '$1'"
+    EQ_LOGIN_NAME=$1
+    EQ_STATUS=$2
+
+    mysql_exec_as $USER "UPDATE account SET status = $EQ_STATUS WHERE name = '$EQ_LOGIN_NAME'"
 }
 
 mysql_import() {
-    log "MYSQL" "Importing: $DBNAME < $1"
-    exec_cmd_as $USER "/usr/bin/mysql $MYSQLCS < $1" "nolog,$2"
+    IMPORT_FILE=$1
+    CMD_OPTIONS=$([ -z "$2" ] && echo "nolog" || echo "$2") 
+
+    log "MYSQL" "Importing: $DBNAME < $IMPORT_FILE"
+    exec_cmd_as $USER "/usr/bin/mysql $MYSQLCS < $IMPORT_FILE" $CMD_OPTIONS
 }
 
 mysql_exec_as() {
-    CONNECT_STRING=$([ "$1" = "root" ] && echo "" || echo "$MYSQLCS")
-    exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog,$3"
+    CMD_USER=$1
+    CONNECT_STRING=$([ "$CMD_USER" = "root" ] && echo "" || echo "$MYSQLCS")
+    MYSQL_COMMAND=$2
+    CMD_OPTIONS=$([ -z "$3" ] && echo "nolog" || echo "$3") 
+
+    exec_cmd_as "$CMD_USER" "/usr/bin/mysql $CONNECT_STRING <<< \"$MYSQL_COMMAND\"" $CMD_OPTIONS
 }
 
 mysql_db_exists() {
-    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'" "output")
-    echo -n $EXISTS
+    ERROR=$(mysql_exec_as $USER "" "nolog,output")
+
+    if [ -z "$ERROR" ]; then
+        echo -n 1
+    else
+        echo -n 0
+    fi
 }
 
 exec_cmd_as() {
+    CMD_USER=$1
+    CMD_COMMAND=$2
+    CMD_OPTIONS=$3
+
     DO_LOG=true
     DO_OUTPUT=false
-    if [[ "$3" =~ "nolog" ]] || [ "$OPT_VERBOSE" = false ]; then
+    DO_EXIT=true
+
+    if [[ "$CMD_OPTIONS" =~ "nolog" ]] || [ "$OPT_VERBOSE" = false ]; then
         DO_LOG=false
     fi
-    if [[ "$3" =~ "output" ]]; then
+    if [[ "$CMD_OPTIONS" =~ "output" ]]; then
         DO_OUTPUT=true
     fi
-    $DO_LOG && log "CMD" "Running: $2 (as $1)" 
-    OUTPUT=$(eval sudo -E -u $1 -- $2)
+    if [[ "$CMD_OPTIONS" =~ "noexit" ]]; then
+        DO_EXIT=false
+    fi
+
+    $DO_LOG && log "CMD" "Running: $CMD_COMMAND (as $CMD_USER)" 
+    OUTPUT=$(eval sudo -E -u $CMD_USER -- $CMD_COMMAND)
     RC=$?
+    
     if [ $RC -ne 0 ]; then
-        $DO_LOG && log "CMD" "Failed: ($RC) $2"
-        exit 1
+        $DO_LOG && log "CMD" "Failed: ($RC) $CMD_COMMAND"
+        $DO_EXIT && exit 1
     fi
     $DO_OUTPUT && echo -n $OUTPUT
 }
@@ -66,9 +92,11 @@ load_variables() {
 }
 
 read_input() {
-    read -p "$1 [$2]: " INPUT
+    READ_MESG=$1
+    READ_DEFAULT=$2
+    read -p "$READ_MESG [$READ_DEFAULT]: " INPUT
     if [ -z $INPUT ]; then
-        INPUT=$2
+        INPUT=$READ_DEFAULT
     fi
     echo $INPUT
 }
@@ -145,5 +173,7 @@ enable_debug() {
 }
 
 log() {
-    printf "%12s %s\n" "[$1]" "$2"
+    LOG_TYPE=$1
+    LOG_MESG=$2
+    printf "%12s %s\n" "[$LOG_TYPE]" "$LOG_MESG"
 }

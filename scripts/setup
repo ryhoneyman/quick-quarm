@@ -66,9 +66,9 @@ DBUSER=$(read_input "Database username" "$DBUSER")
 DBPASS=$(read_input "Database password" "$DBPASS")
 HOSTIP=$(read_input "Host address" "$HOSTIP")
 
-DBEXISTS=$(mysql_db_exists $DBNAME);
+DBEXISTS=$(mysql_db_exists);
 
-if [ ! -z "$DBEXISTS" ]; then
+if [ $DBEXISTS ]; then
     printf "\nDatabase '$DBNAME' already exists, will not destroy it\n"
 fi
 
@@ -111,5 +111,5 @@ Next Steps:
  * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.
  * On your Quick Quarm host, run ./scripts/eq-makegm -l LOGINACCOUNT
  * If you are already logged in, enter '/sit', '/camp login', then log back in to activate GM powers.
- 
+
  "
