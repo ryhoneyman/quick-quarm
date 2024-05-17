@@ -15,6 +15,7 @@ fi
 exit_if_not_root
 
 export LC_ALL=C
+export DEBIAN_FRONTEND=noninteractive
 
 log "INSTALL" "Updating system..."
 exec_cmd_as "root" "/usr/bin/apt-get update"
