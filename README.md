@@ -112,6 +112,7 @@ In order to update Project Quarm to the latest source and database, from the qui
   <li><b>./scripts/update</b>
   <li><b>sudo systemctl restart quick-quarm.target</b> (server will come down and restart)
 </ul>
+<p>Note that if you are using your own repo, update will not attempt a source update since we assume you are controlling the source locally.
 
 <h3>Setup Flags</h3>
 <pre>
