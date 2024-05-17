@@ -18,31 +18,36 @@ eq_account_status() {
 
 mysql_import() {
     log "MYSQL" "Importing: $DBNAME < $1"
-    exec_cmd_as $USER "/usr/bin/mysql $MYSQLCS < $1" "nolog"
+    exec_cmd_as $USER "/usr/bin/mysql $MYSQLCS < $1" "nolog,$2"
 }
 
 mysql_exec_as() {
     CONNECT_STRING=$([ "$1" = "root" ] && echo "" || echo "$MYSQLCS")
-    exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog"
+    exec_cmd_as "$1" "/usr/bin/mysql $CONNECT_STRING <<< \"$2\"" "nolog,$3"
 }
 
 mysql_db_exists() {
-    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'")
-    echo $EXISTS
+    EXISTS=$(mysql_exec_as "root" "SHOW DATABASES LIKE '$1'" "output")
+    echo -n $EXISTS
 }
 
 exec_cmd_as() {
-    DOLOG=true
-    if [ "$3" == "nolog" ] || [ "$OPT_VERBOSE" = false ]; then
-        DOLOG=false
+    DO_LOG=true
+    DO_OUTPUT=false
+    if [[ "$3" =~ "nolog" ]] || [ "$OPT_VERBOSE" = false ]; then
+        DO_LOG=false
     fi
-    $DOLOG && log "CMD" "Running: $2 (as $1)" 
+    if [[ "$3" =~ "output" ]]; then
+        DO_OUTPUT=true
+    fi
+    $DO_LOG && log "CMD" "Running: $2 (as $1)" 
     OUTPUT=$(eval sudo -E -u $1 -- $2)
     RC=$?
     if [ $RC -ne 0 ]; then
-        $DOLOG && log "CMD" "Failed: ($RC) $2"
+        $DO_LOG && log "CMD" "Failed: ($RC) $2"
         exit 1
     fi
+    $DO_OUTPUT && echo -n $OUTPUT
 }
 
 write_variables() {
