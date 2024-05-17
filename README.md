@@ -8,6 +8,9 @@
 <p>Third, the docker solution as presented is not started on server up and is launched as an interactive process in the foreground.  It could be configured to detach and start on system start, but that's up the user to figure out.  <ins>Quick Quarm starts when the server starts automatically in the background</ins>.  
 <p>Quick Quarm does require that you have a persistent host, but you would need that to run the docker daemon anyway.  I think this solution fits the needs of most moderately tech capable people who just want a quick Quarm server to play or seasoned developers who want to dive into the code and give back to the community.
 
+<h3>Notes</h3>
+
+
 <h3>Instructions</h3>
 <ul>
   <li>Create an Ubuntu 22.04 LTS WSL2, VM or persistent container (such as LXC).  <i>[have not tested other OSs]</i>
@@ -83,12 +86,14 @@ Congratulations! Everything completed successfully, and you're one step closer t
 
 Next Steps:
 
- * Download the TAKP v2.2 Client (or copy your existing TAKP folder) to another separate folder from your production Quarm install (if present).
+ * New users: Download the TAKP v2.2 Client and the associated PQ package zip file from PQ Discord #server-files
+ * Existing users: Copy your existing TAKP folder to another separate folder from your normal PQ install.
  * Edit the file eqhost.txt file and change loginserver.takproject.net:6000 to 192.168.1.100:6000
- * Start your client (run as Administrator)
- * Login as whatever username/password you want to use (this will fail and is expected).  Just immediately hit [ENTER] again.
+ * Start your client (run as Administrator, and set compatibility options if needed)
+ * Login as whatever username/password you want to use (this will fail and is expected).  Click Ok, and hit [ENTER] again.
  * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.
- * Your user is not flagged as a GM.  Run /home/user/quick-quarm/scripts/eq-makegm -l LOGINACCOUNT then type '/sit' and '/camp login' to activate.
+ * On your Quick Quarm host, run ./scripts/eq-makegm -l LOGINACCOUNT
+ * While in-game enter '/sit', '/camp login', then log back in to activate GM powers.
 </pre>
 
 <h3>What It Does</h3>
