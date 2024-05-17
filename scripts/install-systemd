@@ -25,5 +25,6 @@ for tmplfile in $SYSTEMDTEMPLATEDIR/*.tmpl; do
 done
 
 log "SYSTEMD" "Enabling Quick Quarm service"
+exec_cmd_as "root" "/usr/bin/systemctl daemon-reload" "nolog"
 exec_cmd_as "root" "/usr/bin/systemctl enable --now quick-quarm.target" "nolog"
 
