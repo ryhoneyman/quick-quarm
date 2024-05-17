@@ -1,7 +1,7 @@
 # Quick Quarm EQ
 <h3>Instructions</h3>
 <ul>
-  <li>Create an Ubuntu 22.04 LTS VM or container.
+  <li>Create an Ubuntu 22.04 LTS VM or persistent container (such as LXC).
   <li>Install with any user that has sudo privilege.
   <li>Clone this repo to the directory of your choosing: <b>git clone https://github.com/ryhoneyman/quick-quarm.git</b>
   <li>Change to the quick-quarm repo directory and run <b>sudo ./scripts/setup</b>
