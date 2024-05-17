@@ -17,9 +17,13 @@ exec_cmd_as $QQUSER "mkdir -p $QQDIR/source"
 
 pushd .
 
-log "SOURCE" "Updating server repo"
-cd $QQDIR/source/EQMacEmu
-exec_cmd_as $QQUSER "git pull"
+if [ $SERVERREPO = $DEFAULT_SERVERREPO ]; then
+    log "SOURCE" "Updating server repo"
+    cd $QQDIR/source/EQMacEmu
+    exec_cmd_as $QQUSER "git pull"
+else
+    log "SOURCE" "Not updating custom source repo"
+fi
 
 log "SOURCE" "Updating quests repo"
 cd $QQDIR/source/quests
