@@ -70,9 +70,13 @@ read_input() {
 
 get_options() {
     local OPTIND
+    export OPT_OPTS=false
     export OPT_DEBUG=false
     export OPT_VERBOSE=false
-    while getopts ":d:v" opt ; do
+    export OPT_FORCE=false
+    export OPT_CLEAN=false
+    while getopts ":dvfch" opt ; do
+        export OPT_OPTS=true
         case "$opt" in
             d)
                 export OPT_DEBUG=true
@@ -80,9 +84,27 @@ get_options() {
             v)
                 export OPT_VERBOSE=true
                 ;;
+            f)
+                export OPT_FORCE=true
+                ;;
+            c)
+                export OPT_CLEAN=true
+                ;;
+            h)
+                usage
+                ;;
         esac
     done 
     shift $((OPTIND-1))
+}
+
+usage() {
+    BASENAME=$(basename $0)
+
+    if [ "$BASENAME" = "setup" ]; then
+        printf "\n$0\n\t-d\tEnable debug\n\t-v\tEnable verbose logging\n\t-f\tEnable forced commands (disregard any safety checks)\n\t-c\tEnable clean mode (removes database/source and starts clean)\n\t-h\tThis help\n\n"
+        exit
+    fi
 }
 
 get_eq_options() {
