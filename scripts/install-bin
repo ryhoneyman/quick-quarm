@@ -26,12 +26,18 @@ cd $BINDIR
 log "INSTALL" "Cleaning up bin directory"
 exec_cmd_as $QQUSER "find $BINDIR -type f ! -name .gitkeep -delete"
 
+### Possibly use OPT_CLEAN to purge logs and shared here, but an active running server uses the shared folder.
+### Shared folder will be rewritten on quick-quarm restart
+
 log "INSTALL" "Copy build binaries to bin directory"
 exec_cmd_as $QQUSER "cp ../source/EQMacEmu/bin/* ."
 
 log "INSTALL" "Create logs and shared directories"
 exec_cmd_as $QQUSER "mkdir -p logs"
 exec_cmd_as $QQUSER "mkdir -p shared"
+
+log "INSTALL" "Link source directory"
+exec_cmd_as $QQUSER "ln -fs ../source"
 
 log "INSTALL" "Link quests and maps directories"
 exec_cmd_as $QQUSER "ln -fs ../source/Maps"
