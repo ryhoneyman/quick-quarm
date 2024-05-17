@@ -91,5 +91,5 @@ printf "\n\n===== DONE!!! =====\n\nCongratulations! Everything completed success
 Next Steps:\n\n * Download the TAKP v2.2 Client (or copy your existing TAKP folder) to another separate folder from your production Quarm install \
 (if present).\n * In the folder, edit the file eqhost.txt file and change loginserver.takproject.net:6000 to $HOSTIP:6000\n * Start your client (run as \
 Administrator)\n * Login as whatever username/password you want to use (this will fail and is expected).  Click Ok, and hit [ENTER] \
-again.\n * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.\n * Your user is not \
-flagged as a GM.  Run $QQDIR/scripts/eq-makegm -l LOGINACCOUNT then type '/sit' and '/camp login' to activate on relogin.\n\n"
+again.\n * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.\n * On your Quick Quarm host, \
+run ./scripts/eq-makegm -l LOGINACCOUNT\n * If you are already logged in, enter '/sit', '/camp login', then log back in to activate GM powers.\n\n"
