@@ -98,3 +98,13 @@ In order to update Project Quarm to the latest source and database, from the qui
   <li><b>./scripts/update</b>
   <li><b>sudo systemctl restart quick-quarm.target</b> (server will come down and restart)
 </ul>
+
+<h3>Setup Flags</h3>
+<pre>
+./setup
+        -d      Enable debug
+        -v      Enable verbose logging
+        -f      Enable forced commands (disregard any safety checks) <b>[not currently used]</b>
+        -c      Enable clean mode (removes database/source and starts clean)
+        -h      This help
+</pre>
