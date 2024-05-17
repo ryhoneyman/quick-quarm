@@ -61,7 +61,7 @@ Beginning setup:
      [MYSQL] Importing: quarm < /home/rhoneyman/quick-quarm/source/EQMacEmu/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql
      [MYSQL] Importing: quarm < /home/rhoneyman/quick-quarm/files/update_settings.sql
      [BUILD] Generating make files...
-     [BUILD] Starting build with 2 threads... (this may take some time for the initial build)
+     [BUILD] Starting build with X threads... (this may take some time for the initial build)
    [INSTALL] Cleaning up bin directory
    [INSTALL] Copy build binaries to bin directory
    [INSTALL] Create logs and shared directories
