@@ -108,11 +108,15 @@ get_options() {
     export OPT_VERBOSE=false
     export OPT_FORCE=false
     export OPT_CLEAN=false
-    while getopts ":dvfch" opt ; do
+    export OPT_CORES=false
+    while getopts ":dvfchj:" opt ; do
         export OPT_OPTS=true
         case "$opt" in
             d)
                 export OPT_DEBUG=true
+                ;;
+            j)
+                export OPT_CORES=$OPTARG
                 ;;
             v)
                 export OPT_VERBOSE=true

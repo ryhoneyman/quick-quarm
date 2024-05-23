@@ -25,6 +25,16 @@ cd $SERVERDIR
 
 NPROC=$(nproc)
 
+if [ "$OPT_CORES" != false ]; then
+    log "BUILD" "Forcing CPU cores to $OPT_CORES"
+    NPROC=$OPT_CORES
+fi
+
+if [ "$NPROC" -gt 8 ]; then
+    log "BUILD" "Locking excessive CPU cores to only 8"
+    NPROC=8
+fi
+
 log "BUILD" "Generating make files..."
 exec_cmd_as $QQUSER "cmake -DCMAKE_CXX_FLAGS='-w -fcompare-debug-second' -G 'Unix Makefiles' ."
 
