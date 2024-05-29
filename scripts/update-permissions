@@ -1,0 +1,18 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+exit_if_not_root
+
+log "INSTALL" "Updating directory permissions..."
+exec_cmd_as "root" "chown -R $QQUSER $QQDIR" 
