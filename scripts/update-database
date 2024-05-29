@@ -27,7 +27,7 @@ fi
 
 cd $DBDIR
 
-log "DATABASE" "Extracting latest database files..."
+log "DATABASE" "Extracting latest database files ($LATESTDB)..."
 exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
 
 log "DATABASE" "Update database and tables..."

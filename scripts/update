@@ -12,6 +12,8 @@ fi
 
 ### Main ###=======================================================
 
+exit_if_not_root
+
 get_options "$@"
 
 DBEXISTS=$(mysql_db_exists)
@@ -27,6 +29,7 @@ fi
 
 printf "\nBeginning update:\n"
 
+. "$QQDIR/scripts/update-permissions"
 . "$QQDIR/scripts/update-source"
 . "$QQDIR/scripts/update-database"
 . "$QQDIR/scripts/build-source"

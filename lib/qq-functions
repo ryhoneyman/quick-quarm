@@ -37,9 +37,9 @@ mysql_exec_as() {
 }
 
 mysql_db_exists() {
-    ERROR=$(mysql_exec_as $USER "" "nolog,output")
+    RC=$(mysql_exec_as $QQUSER "" "nolog,retrc")
 
-    if [ -z "$ERROR" ]; then
+    if [ "$RC" = "0" ]; then
         echo -n 1
     else
         echo -n 0
@@ -52,28 +52,33 @@ exec_cmd_as() {
     CMD_OPTIONS=$3
 
     DO_LOG=true
-    DO_OUTPUT=false
+    DO_RETOUT=false
+    DO_RETRC=false
     DO_EXIT=true
 
     if [[ "$CMD_OPTIONS" =~ "nolog" ]] || [ "$OPT_VERBOSE" = false ]; then
         DO_LOG=false
     fi
-    if [[ "$CMD_OPTIONS" =~ "output" ]]; then
-        DO_OUTPUT=true
+    if [[ "$CMD_OPTIONS" =~ "retout" ]]; then
+        DO_RETOUT=true
+    fi
+    if [[ "$CMD_OPTIONS" =~ "retrc" ]]; then
+        DO_RETRC=true
     fi
     if [[ "$CMD_OPTIONS" =~ "noexit" ]]; then
         DO_EXIT=false
     fi
 
     $DO_LOG && log "CMD" "Running: $CMD_COMMAND (as $CMD_USER)" 
-    OUTPUT=$(eval sudo -E -u $CMD_USER -- $CMD_COMMAND)
+    OUTPUT=$(eval sudo -E -u $CMD_USER -- $CMD_COMMAND 2>&1)
     RC=$?
     
     if [ $RC -ne 0 ]; then
         $DO_LOG && log "CMD" "Failed: ($RC) $CMD_COMMAND"
         $DO_EXIT && exit 1
     fi
-    $DO_OUTPUT && echo -n $OUTPUT
+    $DO_RETOUT && echo -n $OUTPUT
+    $DO_RETRC && echo -n $RC
 }
 
 write_variables() {
