@@ -71,8 +71,9 @@ write_variables
 load_variables
 
 DBEXISTS=$(mysql_db_exists);
+echo $DBEXISTS;
 
-if [ $DBEXISTS ] && [ "$OPT_CLEAN" = false ]; then
+if [ "$DBEXISTS" = "1" ] && [ "$OPT_CLEAN" = false ]; then
     printf "\nDatabase '$DBNAME' already exists, will not destroy it\n"
 fi
 
@@ -82,7 +83,7 @@ printf "\nBeginning setup:\n"
 . "$QQDIR/scripts/install-deps"
 . "$QQDIR/scripts/download-source"
 
-if [ -z "$DBEXISTS" ] || [ "$OPT_CLEAN" = true ]; then
+if [ "$DBEXISTS" = "0" ] || [ "$OPT_CLEAN" = true ]; then
     . "$QQDIR/scripts/install-database"
 else 
     log "DATABASE" "Database $DBNAME already exists, updating..."

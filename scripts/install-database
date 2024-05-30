@@ -23,6 +23,9 @@ LATESTDB=$(ls -Art $DATADIR | tail -n 1)
 
 pushd .
 
+exec_cmd_as $QQUSER "rm -rf $DBDIR"
+exec_cmd_as $QQUSER "mkdir -p $DBDIR"
+
 cd $DBDIR
 
 log "DATABASE" "Extracting latest database files..."
@@ -30,12 +33,14 @@ exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB"
 
 log "DATABASE" "Setup database and tables..."
 mysql_exec_as "root" "DROP DATABASE IF EXISTS $DBNAME; CREATE DATABASE $DBNAME"
-mysql_import "$DBDIR/login_tables_*.sql"
-mysql_import "$DBDIR/player_tables_*.sql"
-mysql_import "$DBDIR/quarm_*.sql"
-mysql_import "$DBDIR/data_tables_*.sql"
-mysql_import "$SERVERDIR/loginserver/login_util/tblloginserversettings.sql"
-mysql_import "$SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql"
-mysql_import "$FILESDIR/update_settings.sql"
+mysql_import_as "root" "$FILESDIR/update_settings.sql"
+mysql_import_as $QQUSER "$DBDIR/login_tables_*.sql"
+mysql_import_as $QQUSER "$DBDIR/player_tables_*.sql"
+mysql_import_as $QQUSER "$DBDIR/quarm_*.sql"
+mysql_import_as $QQUSER "$DBDIR/data_tables_*.sql"
+mysql_import_as $QQUSER "$SERVERDIR/loginserver/login_util/tblloginserversettings.sql"
+mysql_import_as $QQUSER "$SERVERDIR/loginserver/login_util/updates/2023_07_27_tblLoginServerAccounts.sql"
+mysql_import_as $QQUSER "$FILESDIR/update_quarm.sql"
+log "DATABASE" "$DBNAME ready."
 
 popd

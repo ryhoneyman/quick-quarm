@@ -25,13 +25,16 @@ if [ ! -d "$DBDIR" ]; then
     exit 1
 fi
 
+exec_cmd_as $QQUSER "rm -rf $DBDIR"
+exec_cmd_as $QQUSER "mkdir -p $DBDIR"
+
 cd $DBDIR
 
 log "DATABASE" "Extracting latest database files ($LATESTDB)..."
 exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
 
 log "DATABASE" "Update database and tables..."
-mysql_import "$DBDIR/drop_system.sql"
-mysql_import "$DBDIR/quarm_*.sql"
+mysql_import_as $QQUSER "$DBDIR/drop_system.sql"
+mysql_import_as $QQUSER "$DBDIR/quarm_*.sql"
 
 popd

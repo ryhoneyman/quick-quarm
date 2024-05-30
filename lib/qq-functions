@@ -19,12 +19,14 @@ eq_account_status() {
     mysql_exec_as $USER "UPDATE account SET status = $EQ_STATUS WHERE name = '$EQ_LOGIN_NAME'"
 }
 
-mysql_import() {
-    IMPORT_FILE=$1
-    CMD_OPTIONS=$([ -z "$2" ] && echo "nolog" || echo "$2") 
+mysql_import_as() {
+    CMD_USER=$1
+    CONNECT_STRING=$([ "$CMD_USER" = "root" ] && echo "" || echo "$MYSQLCS")
+    IMPORT_FILE=$2
+    CMD_OPTIONS=$([ -z "$3" ] && echo "nolog" || echo "$3") 
 
     log "MYSQL" "Importing: $DBNAME < $IMPORT_FILE"
-    exec_cmd_as $USER "/usr/bin/mysql $MYSQLCS < $IMPORT_FILE" $CMD_OPTIONS
+    exec_cmd_as "$CMD_USER" "/usr/bin/mysql $CONNECT_STRING < $IMPORT_FILE" $CMD_OPTIONS
 }
 
 mysql_exec_as() {
@@ -74,7 +76,7 @@ exec_cmd_as() {
     RC=$?
     
     if [ $RC -ne 0 ]; then
-        $DO_LOG && log "CMD" "Failed: ($RC) $CMD_COMMAND"
+        ($DO_LOG || $DO_EXIT) && log "CMD" "Failed: ($RC) $CMD_COMMAND"
         $DO_EXIT && exit 1
     fi
     $DO_RETOUT && echo -n $OUTPUT
