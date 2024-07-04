@@ -5,6 +5,7 @@ export DEFAULT_SERVERREPO='https://github.com/SecretsOTheP/EQMacEmu.git'
 export DEFAULT_DBHOST='localhost'
 export DEFAULT_DBWORD='quarm'
 export DEFAULT_HOSTIP=$(hostname -I | sed -z 's/[[:space:]]//')
+export DEFAULT_PUBLIC='N'
 export DEFAULT_PUBLICIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
 export DEFAULT_WORLDKEY=$(uuidgen)
 
@@ -88,7 +89,7 @@ write_variables() {
     ENVFILE=$QQDIR/etc/.env
 
     printf "\nWriting configuration to $ENVFILE\n"
-    exec_cmd_as $QQUSER "printf \"export QQDIR='$QQDIR'\nexport QQUSER='$QQUSER'\nexport SERVERREPO='$SERVERREPO'\nexport DBHOST=$DBHOST\nexport DBNAME=$DBNAME\nexport DBUSER=$DBUSER\nexport DBPASS=$DBPASS\nexport HOSTIP=$HOSTIP\nexport PUBLICIP=$PUBLICIP\nexport WORLDKEY=$WORLDKEY\" > $ENVFILE" "nolog"
+    exec_cmd_as $QQUSER "printf \"export QQDIR='$QQDIR'\nexport QQUSER='$QQUSER'\nexport SERVERREPO='$SERVERREPO'\nexport DBHOST=$DBHOST\nexport DBNAME=$DBNAME\nexport DBUSER=$DBUSER\nexport DBPASS=$DBPASS\nexport HOSTIP=$HOSTIP\nexport PUBLIC=$PUBLIC\nexport PUBLICIP=$PUBLICIP\nexport WORLDKEY=$WORLDKEY\" > $ENVFILE" "nolog"
 }
 
 load_variables() {

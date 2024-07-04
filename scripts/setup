@@ -24,6 +24,7 @@ DBNAME=$([ ! -z "${DBNAME}" ] && echo "$DBNAME" || echo "$DEFAULT_DBWORD")
 DBUSER=$([ ! -z "${DBUSER}" ] && echo "$DBUSER" || echo "$DEFAULT_DBWORD")
 DBPASS=$([ ! -z "${DBPASS}" ] && echo "$DBPASS" || echo "$DEFAULT_DBWORD")
 HOSTIP=$([ ! -z "${HOSTIP}" ] && echo "$HOSTIP" || echo "$DEFAULT_HOSTIP")
+PUBLIC=$([ ! -z "${PUBLIC}" ] && echo "$PUBLIC" || echo "$DEFAULT_PUBLIC")
 PUBLICIP=$([ ! -z "${PUBLICIP}" ] && echo "$PUBLICIP" || echo "$DEFAULT_PUBLICIP")
 WORLDKEY=$([ ! -z "${WORLDKEY}" ] && echo "$WORLDKEY" || echo "$DEFAULT_WORLDKEY")
 
@@ -63,7 +64,13 @@ DBNAME=$(read_input "Database name" "$DBNAME")
 DBUSER=$(read_input "Database username" "$DBUSER")
 DBPASS=$(read_input "Database password" "$DBPASS")
 HOSTIP=$(read_input "Host address" "$HOSTIP")
-PUBLICIP=$(read_input "Public address" "$PUBLICIP")
+PUBLIC=$(read_input "Public server (y/N)" "$PUBLIC")
+
+if [[ "$PUBLIC" =~ [Yy] ]]; then 
+    PUBLICIP=$(read_input "Public address" "$PUBLICIP")
+else
+    PUBLICIP=''
+fi
 
 if [ "$OPT_DEBUG" = true ]; then 
     enable_debug
@@ -102,13 +109,19 @@ printf "
 
 Congratulations! Everything completed successfully, and you're one step closer to your own Quarm server.
 
-Next Steps:
+Next Steps:"
+
+if [[ "$PUBLIC" =~ [Yy] ]]; then
+    printf "
  * For public access you need to open the following ports to $HOSTIP on your router/firewall:
    - Login Server: udp/6000, tcp/5998
    - Chat Server: udp/7778
    - World Server: tcp/9000, udp/9000
    - Zone Servers: udp/7000-7011 
+   "
+fi
 
+printf "
  * New users: Download the TAKP v2.2 Client and the associated PQ package zip file from PQ Discord #server-files
  * Existing users: Copy your existing TAKP folder to another separate folder from your normal PQ install.
  * Edit the file eqhost.txt file and change loginserver.takproject.net:6000 to 192.168.1.100:6000
