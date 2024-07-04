@@ -20,17 +20,17 @@ pushd .
 if [ $SERVERREPO = $DEFAULT_SERVERREPO ]; then
     log "SOURCE" "Updating server repo"
     cd $QQDIR/source/EQMacEmu
-    exec_cmd_as $QQUSER "git pull"
+    exec_cmd_as $QQUSER "git reset --hard HEAD; git pull"
 else
     log "SOURCE" "Not updating custom source repo"
 fi
 
 log "SOURCE" "Updating quests repo"
 cd $QQDIR/source/quests
-exec_cmd_as $QQUSER "git pull"
+exec_cmd_as $QQUSER "git reset --hard HEAD; git pull"
 
 log "SOURCE" "Updating maps repo"
 cd $QQDIR/source/Maps
-exec_cmd_as $QQUSER "git pull"
+exec_cmd_as $QQUSER "git reset --hard HEAD; git pull"
 
 popd
