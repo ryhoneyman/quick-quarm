@@ -24,6 +24,7 @@ DBNAME=$([ ! -z "${DBNAME}" ] && echo "$DBNAME" || echo "$DEFAULT_DBWORD")
 DBUSER=$([ ! -z "${DBUSER}" ] && echo "$DBUSER" || echo "$DEFAULT_DBWORD")
 DBPASS=$([ ! -z "${DBPASS}" ] && echo "$DBPASS" || echo "$DEFAULT_DBWORD")
 HOSTIP=$([ ! -z "${HOSTIP}" ] && echo "$HOSTIP" || echo "$DEFAULT_HOSTIP")
+PUBLICIP=$([ ! -z "${PUBLICIP}" ] && echo "$PUBLICIP" || echo "$DEFAULT_PUBLICIP")
 WORLDKEY=$([ ! -z "${WORLDKEY}" ] && echo "$WORLDKEY" || echo "$DEFAULT_WORLDKEY")
 
 if [ "$OPT_OPTS" = true ]; then
@@ -62,6 +63,7 @@ DBNAME=$(read_input "Database name" "$DBNAME")
 DBUSER=$(read_input "Database username" "$DBUSER")
 DBPASS=$(read_input "Database password" "$DBPASS")
 HOSTIP=$(read_input "Host address" "$HOSTIP")
+PUBLICIP=$(read_input "Public address" "$PUBLICIP")
 
 if [ "$OPT_DEBUG" = true ]; then 
     enable_debug
@@ -101,6 +103,11 @@ printf "
 Congratulations! Everything completed successfully, and you're one step closer to your own Quarm server.
 
 Next Steps:
+ * For public access you need to open the following ports to $HOSTIP on your router/firewall:
+   - Login Server: udp/6000, tcp/5998
+   - Chat Server: udp/7778
+   - World Server: tcp/9000, udp/9000
+   - Zone Servers: udp/7000-7011 
 
  * New users: Download the TAKP v2.2 Client and the associated PQ package zip file from PQ Discord #server-files
  * Existing users: Copy your existing TAKP folder to another separate folder from your normal PQ install.
