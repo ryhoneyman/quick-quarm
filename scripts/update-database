@@ -12,11 +12,7 @@ fi
 
 ### Main ###=======================================================
 
-DBDIR=$QQDIR/db
-SERVERDIR=$QQDIR/source/EQMacEmu
-DATADIR=$SERVERDIR/utils/sql/database_full
-
-LATESTDB=$(ls -Art $DATADIR | tail -n 1)
+LATESTDB=$(ls -Art $DBDUMPDIR | tail -n 1)
 
 pushd .
 
@@ -31,10 +27,11 @@ exec_cmd_as $QQUSER "mkdir -p $DBDIR"
 cd $DBDIR
 
 log "DATABASE" "Extracting latest database files ($LATESTDB)..."
-exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
+exec_cmd_as $QQUSER "tar zxf $DBDUMPDIR/$LATESTDB" 
 
 log "DATABASE" "Update database and tables..."
 mysql_import_as $QQUSER "$DBDIR/drop_system.sql"
 mysql_import_as $QQUSER "$DBDIR/quarm_*.sql"
+mysql_import_as $QQUSER "$FILESDIR/update_quarm.sql"
 
 popd

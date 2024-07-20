@@ -1,6 +1,8 @@
+# Main variables
 export SCRIPTDIR=${BASH_SOURCE%/*}
 export QQDIR=$(dirname -- $(realpath $SCRIPTDIR))
 
+# Defaults
 export DEFAULT_SERVERREPO='https://github.com/SecretsOTheP/EQMacEmu.git'
 export DEFAULT_DBHOST='localhost'
 export DEFAULT_DBWORD='quarm'
@@ -9,8 +11,15 @@ export DEFAULT_PUBLIC='N'
 export DEFAULT_PUBLICIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
 export DEFAULT_WORLDKEY=$(uuidgen)
 
+# Template variables
 export TEMPLATE_EQEMUCONFIG="$QQDIR/files/eqemu_config.json.tmpl"
 export TEMPLATE_LOGININI="$QQDIR/files/login.ini.tmpl"
+
+# Common variables
+export DBDIR="$QQDIR/db"
+export FILESDIR="$QQDIR/files"
+export SERVERDIR="$QQDIR/source/EQMacEmu"
+export DBDUMPDIR="$SERVERDIR/utils/sql/database_full"
 
 
 
@@ -18,12 +27,12 @@ eq_account_status() {
     EQ_LOGIN_NAME=$1
     EQ_STATUS=$2
 
-    mysql_exec_as $USER "UPDATE account SET status = $EQ_STATUS WHERE name = '$EQ_LOGIN_NAME'"
+    mysql_exec_as $USER "UPDATE account SET status = $EQ_STATUS WHERE name = '$EQ_LOGIN_NAME'" "retrc"
 }
 
 mysql_import_as() {
     CMD_USER=$1
-    CONNECT_STRING=$([ "$CMD_USER" = "root" ] && echo "" || echo "$MYSQLCS")
+    CONNECT_STRING=$([ "$CMD_USER" = "root" ] && echo "$DBNAME" || echo "$MYSQLCS")
     IMPORT_FILE=$2
     CMD_OPTIONS=$([ -z "$3" ] && echo "nolog" || echo "$3") 
 
@@ -33,7 +42,7 @@ mysql_import_as() {
 
 mysql_exec_as() {
     CMD_USER=$1
-    CONNECT_STRING=$([ "$CMD_USER" = "root" ] && echo "" || echo "$MYSQLCS")
+    CONNECT_STRING=$([ "$CMD_USER" = "root" ] && echo "$DBNAME" || echo "$MYSQLCS")
     MYSQL_COMMAND=$2
     CMD_OPTIONS=$([ -z "$3" ] && echo "nolog" || echo "$3") 
 
@@ -156,10 +165,14 @@ usage() {
 get_eq_options() {
     local OPTIND
     EQ_LOGIN=false
+    EQ_STATUS=0
     while getopts ":l:" opt ; do
         case "$opt" in
             l)
                 EQ_LOGIN=$OPTARG
+                ;;
+            s)
+                EQ_STATUS=$OPTARG
                 ;;
         esac
     done 

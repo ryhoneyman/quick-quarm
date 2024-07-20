@@ -3,28 +3,27 @@ ALTER TABLE tblLoginServerAccounts ALTER column creationIP SET DEFAULT '127.0.0.
 ALTER TABLE tblLoginServerAccounts ALTER column ForumName SET DEFAULT 'none';
 
 -- Launcher zones for boats
-UPDATE `launcher_zones`
-SET `port` = CASE
-  WHEN `zone` = 'erudnext' THEN 7375
-  WHEN `zone` = 'erudsxing' THEN 7376
-  WHEN `zone` = 'qeynos' THEN 7377
-  WHEN `zone` = 'freporte' THEN 7378
-  WHEN `zone` = 'oot' THEN 7379
-  WHEN `zone` = 'butcher' THEN 7380
-  WHEN `zone` = 'oasis' THEN 7381
-  WHEN `zone` = 'nro' THEN 7382
-  WHEN `zone` = 'firiona' THEN 7383
-  WHEN `zone` = 'overthere' THEN 7384
-  WHEN `zone` = 'timorous' THEN 7385
-  WHEN `zone` = 'iceclad' THEN 7386
-END
-WHERE `launcher` = 'boats';
+DELETE FROM `launcher_zones` WHERE `zone` IN ('butcher','erudnext','erudsxing','firiona','freporte','iceclad','nro','oasis','oot','overthere','qeynos','timorous');
+INSERT INTO `launcher_zones` VALUES 
+('boats','butcher',7300,1,'classic'),
+('boats','erudnext',7301,1,'classic'),
+('boats','erudsxing',7302,1,'classic'),
+('boats','firiona',7303,1,'classic'),
+('boats','freporte',7304,1,'classic'),
+('boats','iceclad',7305,1,'classic'),
+('boats','nro',7306,1,'classic'),
+('boats','oasis',7307,1,'classic'),
+('boats','oot',7308,1,'classic'),
+('boats','overthere',7309,1,'classic'),
+('boats','qeynos',7310,1,'classic'),
+('boats','timorous',7311,1,'classic');
+
 
 -- Rules
 UPDATE `rule_values` SET `rule_value` = 100 WHERE `rule_name` = "World:AddMaxClientsPerIP";
 UPDATE `rule_values` SET `rule_value` = 100 WHERE `rule_name` = "World:MaxClientsPerIP";
 UPDATE `rule_values` SET `rule_value` = 1 WHERE `rule_name` = "Chat:GlobalChatLevelLimit";
-UPDATE `rule_values` SET `rule_value` = 50 WHERE `rule_name` = "Character:MaxBetaBuffLevel";
+UPDATE `rule_values` SET `rule_value` = 65 WHERE `rule_name` = "Character:MaxBetaBuffLevel";
 UPDATE `rule_values` SET `rule_value` = 1 WHERE `rule_name` = "Chat:KarmaGlobalChatLevelLimit";
 UPDATE `rule_values` SET `rule_value` = false WHERE `rule_name` = "World:DontBootDynamics";
 

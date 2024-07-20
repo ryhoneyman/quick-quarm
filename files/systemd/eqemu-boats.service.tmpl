@@ -1,0 +1,14 @@
+[Unit]
+Description=EQEmu Boat Zone Servers
+After=eqemu-world.service eqemu-shared-memory.service mariadb.service network.target
+Requires=eqemu-world.service eqemu-shared-memory.service mariadb.service
+PartOf=quick-quarm.target
+
+[Service]
+Type=exec
+User=${QQUSER}
+WorkingDirectory=${QQDIR}/bin
+ExecStart=${QQDIR}/bin/eqlaunch boats
+
+[Install]
+WantedBy=quick-quarm.target

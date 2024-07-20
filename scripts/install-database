@@ -14,12 +14,7 @@ fi
 
 exit_if_not_root
 
-DBDIR=$QQDIR/db
-FILESDIR=$QQDIR/files
-SERVERDIR=$QQDIR/source/EQMacEmu
-DATADIR=$SERVERDIR/utils/sql/database_full
-
-LATESTDB=$(ls -Art $DATADIR | tail -n 1)
+LATESTDB=$(ls -Art $DBDUMPDIR | tail -n 1)
 
 pushd .
 
@@ -29,7 +24,7 @@ exec_cmd_as $QQUSER "mkdir -p $DBDIR"
 cd $DBDIR
 
 log "DATABASE" "Extracting latest database files..."
-exec_cmd_as $QQUSER "tar zxf $DATADIR/$LATESTDB" 
+exec_cmd_as $QQUSER "tar zxf $DBDUMPDIR/$LATESTDB" 
 
 log "DATABASE" "Setup database and tables..."
 mysql_exec_as "root" "DROP DATABASE IF EXISTS $DBNAME; CREATE DATABASE $DBNAME"

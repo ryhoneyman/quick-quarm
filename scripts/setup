@@ -25,6 +25,7 @@ DBUSER=$([ ! -z "${DBUSER}" ] && echo "$DBUSER" || echo "$DEFAULT_DBWORD")
 DBPASS=$([ ! -z "${DBPASS}" ] && echo "$DBPASS" || echo "$DEFAULT_DBWORD")
 HOSTIP=$([ ! -z "${HOSTIP}" ] && echo "$HOSTIP" || echo "$DEFAULT_HOSTIP")
 PUBLIC=$([ ! -z "${PUBLIC}" ] && echo "$PUBLIC" || echo "$DEFAULT_PUBLIC")
+BOATS=$([ ! -z "${BOATS}" ] && echo "$BOATS" || echo "$DEFAULT_BOATS")
 PUBLICIP=$([ ! -z "${PUBLICIP}" ] && echo "$PUBLICIP" || echo "$DEFAULT_PUBLICIP")
 WORLDKEY=$([ ! -z "${WORLDKEY}" ] && echo "$WORLDKEY" || echo "$DEFAULT_WORLDKEY")
 
@@ -79,8 +80,7 @@ fi
 write_variables
 load_variables
 
-DBEXISTS=$(mysql_db_exists);
-echo $DBEXISTS;
+DBEXISTS=$(mysql_db_exists)
 
 if [ "$DBEXISTS" = "1" ] && [ "$OPT_CLEAN" = false ]; then
     printf "\nDatabase '$DBNAME' already exists, will not destroy it\n"
@@ -118,6 +118,7 @@ if [[ "$PUBLIC" =~ [Yy] ]]; then
    - Chat Server: udp/7778
    - World Server: tcp/9000, udp/9000
    - Zone Servers: udp/7000-7011 
+   - Boat Zone Servers: udp/7300-7311
    "
 fi
 
@@ -128,7 +129,7 @@ printf "
  * Start your client (run as Administrator, and set compatibility options if needed)
  * Login as whatever username/password you want to use (this will fail and is expected).  Click Ok, and hit [ENTER] again.
  * You should see your Quick Quarm EQ server in the list: select it, create a character, and enter the world.
- * On your Quick Quarm host, run ./scripts/eq-makegm -l LOGINACCOUNT
+ * On your Quick Quarm host, run ./scripts/eq/makegm -l LOGINACCOUNT
  * If you are already logged in, enter '/sit', '/camp login', then log back in to activate GM powers.
 
  "
