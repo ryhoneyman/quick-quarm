@@ -23,7 +23,7 @@ log "INSTALL" "Installing dependencies..."
 exec_cmd_as "root" "/usr/bin/apt-get -y install git build-essential cmake libboost-dev libmariadb-dev liblua5.1-dev uuid-dev mariadb-server uuid-runtime"
 
 log "INSTALL" "Setting up MySQL user..."
-mysql_exec_as "root" "CREATE DATABASE IF NOT EXISTS $DBNAME"
+exec_cmd_as "root" "$MYSQLBIN <<< \"CREATE DATABASE IF NOT EXISTS $DBNAME\""
 mysql_exec_as "root" "DROP USER IF EXISTS '$DBUSER'@'%'; CREATE USER '$DBUSER'@'%' IDENTIFIED BY '$DBPASS'; GRANT ALL ON $DBNAME.* TO '$DBUSER'@'%'"
 
 
