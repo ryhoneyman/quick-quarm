@@ -47,4 +47,6 @@ log "INSTALL" "Copy in auxillary configuration files"
 exec_cmd_as $QQUSER "cp ../source/EQMacEmu/loginserver/login_util/*.conf ."
 exec_cmd_as $QQUSER "cp ../source/EQMacEmu/utils/patches/*.conf ."
 
+. "$QQDIR/scripts/update-config"
+
 popd
