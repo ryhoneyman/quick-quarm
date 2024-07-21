@@ -2,6 +2,8 @@
 export SCRIPTDIR=${BASH_SOURCE%/*}
 export QQDIR=$(dirname -- $(realpath $SCRIPTDIR))
 
+export MYSQLBIN="/usr/bin/mysql"
+
 # Defaults
 export DEFAULT_SERVERREPO='https://github.com/SecretsOTheP/EQMacEmu.git'
 export DEFAULT_DBHOST='localhost'
@@ -37,7 +39,7 @@ mysql_import_as() {
     CMD_OPTIONS=$([ -z "$3" ] && echo "nolog" || echo "$3") 
 
     log "MYSQL" "Importing: $DBNAME < $IMPORT_FILE"
-    exec_cmd_as "$CMD_USER" "/usr/bin/mysql $CONNECT_STRING < $IMPORT_FILE" $CMD_OPTIONS
+    exec_cmd_as "$CMD_USER" "$MYSQLBIN $CONNECT_STRING < $IMPORT_FILE" $CMD_OPTIONS
 }
 
 mysql_exec_as() {
@@ -46,7 +48,7 @@ mysql_exec_as() {
     MYSQL_COMMAND=$2
     CMD_OPTIONS=$([ -z "$3" ] && echo "nolog" || echo "$3") 
 
-    exec_cmd_as "$CMD_USER" "/usr/bin/mysql $CONNECT_STRING <<< \"$MYSQL_COMMAND\"" $CMD_OPTIONS
+    exec_cmd_as "$CMD_USER" "$MYSQLBIN $CONNECT_STRING <<< \"$MYSQL_COMMAND\"" $CMD_OPTIONS
 }
 
 mysql_db_exists() {
