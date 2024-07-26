@@ -16,7 +16,7 @@ get_options "$@"
 
 pushd .
 
-SERVERDIR=$($OPT_DIR && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
+SERVERDIR=$([ ! -z "$OPT_DIR" ] && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
 
 if [ ! -d "$SERVERDIR" ]; then
     log "BUILD" "Directory $SERVERDIR doesn't exist"

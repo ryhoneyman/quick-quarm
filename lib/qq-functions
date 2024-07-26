@@ -129,7 +129,7 @@ get_options() {
     export OPT_FORCE=false
     export OPT_CLEAN=false
     export OPT_CORES=false
-    export OPT_DIR=false
+    export OPT_DIR=''
     while getopts ":dvfchj:r:" opt ; do
         export OPT_OPTS=true
         case "$opt" in

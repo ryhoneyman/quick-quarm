@@ -17,7 +17,7 @@ get_options "$@"
 pushd .
 
 BINDIR="$QQDIR/bin"
-SERVERDIR=$($OPT_DIR && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
+SERVERDIR=$([ ! -z "$OPT_DIR" ] && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
 
 if [ ! -d "$BINDIR" ]; then
     log "BUILD" "Directory $BINDIR doesn't exist, creating it."
