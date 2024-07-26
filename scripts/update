@@ -32,8 +32,8 @@ printf "\nBeginning update:\n"
 . "$QQDIR/scripts/update-permissions"
 . "$QQDIR/scripts/update-source"
 . "$QQDIR/scripts/update-database"
-. "$QQDIR/scripts/build-source"
-. "$QQDIR/scripts/install-bin"
+. "$QQDIR/scripts/build-source" "$@"
+. "$QQDIR/scripts/install-bin" "$@"
 . "$QQDIR/scripts/update-config"
 
 printf "\n\n===== UPDATED!!! =====\n\nIn order to complete the update, you need to restart the Quick Quarm service.\nKeep in mind that the server \

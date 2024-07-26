@@ -37,7 +37,7 @@ exec_cmd_as $QQUSER "find $BINDIR -type f ! -name .gitkeep -delete"
 ### Possibly use OPT_CLEAN to purge logs and shared here, but an active running server uses the shared folder.
 ### Shared folder will be rewritten on quick-quarm restart
 
-log "INSTALL" "Copy build binaries to bin directory"
+log "INSTALL" "Copy build binaries $SERVERDIR/bin to bin directory"
 exec_cmd_as $QQUSER "cp $SERVERDIR/bin/* ."
 
 log "INSTALL" "Create logs and shared directories"

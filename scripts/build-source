@@ -37,6 +37,8 @@ if [[ "$NPROC" -gt 8 ]]; then
     NPROC=8
 fi
 
+log "BUILD" "Using source in $SERVERDIR"
+
 log "BUILD" "Generating make files..."
 exec_cmd_as $QQUSER "cmake -DCMAKE_CXX_FLAGS='-w -fcompare-debug-second' -G 'Unix Makefiles' ."
 
