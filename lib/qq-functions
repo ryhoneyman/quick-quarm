@@ -129,7 +129,8 @@ get_options() {
     export OPT_FORCE=false
     export OPT_CLEAN=false
     export OPT_CORES=false
-    while getopts ":dvfchj:" opt ; do
+    export OPT_DIR=false
+    while getopts ":dvfchj:r:" opt ; do
         export OPT_OPTS=true
         case "$opt" in
             d)
@@ -147,6 +148,9 @@ get_options() {
             c)
                 export OPT_CLEAN=true
                 ;;
+            r)
+                export OPT_DIR=$OPTARG
+                ;;    
             h)
                 usage
                 ;;

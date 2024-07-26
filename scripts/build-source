@@ -12,12 +12,14 @@ fi
 
 ### Main ###=======================================================
 
+get_options "$@"
+
 pushd .
 
-SERVERDIR="$QQDIR/source/EQMacEmu"
+SERVERDIR=$($OPT_DIR && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
 
 if [ ! -d "$SERVERDIR" ]; then
-    log "BUILD" "Directory $SOURCEDIR doesn't exist"
+    log "BUILD" "Directory $SERVERDIR doesn't exist"
     exit 1
 fi
 

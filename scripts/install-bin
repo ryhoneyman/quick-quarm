@@ -12,12 +12,20 @@ fi
 
 ### Main ###=======================================================
 
+get_options "$@"
+
 pushd .
 
 BINDIR="$QQDIR/bin"
+SERVERDIR=$($OPT_DIR && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
 
 if [ ! -d "$BINDIR" ]; then
-    log "SOURCE" "Directory $BINDIR doesn't exist"
+    log "BUILD" "Directory $BINDIR doesn't exist, creating it."
+    exec_cmd_as $QQUSER "mkdir -p $BINDIR" 
+fi
+
+if [ ! -d "$SERVERDIR" ]; then
+    log "BUILD" "Directory $SERVERDIR doesn't exist"
     exit 1
 fi
 
@@ -30,7 +38,7 @@ exec_cmd_as $QQUSER "find $BINDIR -type f ! -name .gitkeep -delete"
 ### Shared folder will be rewritten on quick-quarm restart
 
 log "INSTALL" "Copy build binaries to bin directory"
-exec_cmd_as $QQUSER "cp ../source/EQMacEmu/bin/* ."
+exec_cmd_as $QQUSER "cp $SERVERDIR/bin/* ."
 
 log "INSTALL" "Create logs and shared directories"
 exec_cmd_as $QQUSER "mkdir -p logs"
@@ -44,8 +52,8 @@ exec_cmd_as $QQUSER "ln -fs ../source/Maps"
 exec_cmd_as $QQUSER "ln -fs ../source/quests"
 
 log "INSTALL" "Copy in auxillary configuration files"
-exec_cmd_as $QQUSER "cp ../source/EQMacEmu/loginserver/login_util/*.conf ."
-exec_cmd_as $QQUSER "cp ../source/EQMacEmu/utils/patches/*.conf ."
+exec_cmd_as $QQUSER "cp $SERVERDIR/loginserver/login_util/*.conf ."
+exec_cmd_as $QQUSER "cp $SERVERDIR/utils/patches/*.conf ."
 
 . "$QQDIR/scripts/update-config"
 
