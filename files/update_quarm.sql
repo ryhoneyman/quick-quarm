@@ -28,14 +28,24 @@ UPDATE `rule_values` SET `rule_value` = 1 WHERE `rule_name` = "Chat:KarmaGlobalC
 UPDATE `rule_values` SET `rule_value` = false WHERE `rule_name` = "World:DontBootDynamics";
 
 -- Logging
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=30;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=31;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=32;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=33;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=34;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=35;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=36;
-UPDATE `logsys_categories` SET `log_to_console`=3 WHERE  `log_category_id`=37;
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 30; -- Login Server
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 31; -- UCS Server 
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 32; -- Webinterface Server 
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 33; -- World Server 
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 34; -- Zone Server 
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 35; -- MySQL Error 
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 36; -- MySQL Query 
+UPDATE `logsys_categories` SET `log_to_console` = 3, `log_to_file` = 3 WHERE  `log_category_id` = 37; -- EQMac 
+
+
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 58; -- Info
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 63; -- Notice
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 59; -- Warning
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 11; -- Error
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 62; -- Alert
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 60; -- Critical
+UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 61; -- Emergency
+
 
 -- Fix dynamic launcher count
 UPDATE launcher SET dynamics = 10 WHERE name = 'dynzone1';
