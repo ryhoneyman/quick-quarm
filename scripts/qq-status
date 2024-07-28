@@ -12,4 +12,4 @@ fi
 
 ### Main ###=======================================================
 
-/usr/bin/systemctl status --with-dependencies quick-quarm.target | egrep 'Active:|└─|├─'
+/usr/bin/systemctl status --with-dependencies quick-quarm.target | egrep 'Active:|└─|├─|`-|\|-'
