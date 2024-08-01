@@ -21,6 +21,6 @@ fi
 log "CONFIG" "Updating eqemu_config.json"
 exec_cmd_as $QQUSER "envsubst < $TEMPLATE_EQEMUCONFIG > $QQDIR/bin/eqemu_config.json"
 
-log "CONFIG" "Updating login.ini"
-exec_cmd_as $QQUSER "envsubst < $TEMPLATE_LOGININI > $QQDIR/bin/login.ini"
+log "CONFIG" "Updating login.json"
+exec_cmd_as $QQUSER "envsubst < $TEMPLATE_LOGININI > $QQDIR/bin/login.json"
 

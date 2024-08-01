@@ -15,7 +15,7 @@ export DEFAULT_WORLDKEY=$(uuidgen)
 
 # Template variables
 export TEMPLATE_EQEMUCONFIG="$QQDIR/files/eqemu_config.json.tmpl"
-export TEMPLATE_LOGININI="$QQDIR/files/login.ini.tmpl"
+export TEMPLATE_LOGININI="$QQDIR/files/login.json.tmpl"
 
 # Common variables
 export DBDIR="$QQDIR/db"
