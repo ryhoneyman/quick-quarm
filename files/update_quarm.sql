@@ -49,3 +49,10 @@ UPDATE `logsys_categories` SET `log_to_file` = 3 WHERE `log_category_id` = 61; -
 
 -- Fix dynamic launcher count
 UPDATE launcher SET dynamics = 10 WHERE name = 'dynzone1';
+
+-- Add banned_ips table if it doesn't exist
+CREATE TABLE IF NOT EXISTS `banned_ips` (
+    `ip_address` varchar(20) NOT NULL DEFAULT '0',
+    `notes` text DEFAULT NULL,
+    PRIMARY KEY (`ip_address`)
+) ENGINE=InnoDB;
