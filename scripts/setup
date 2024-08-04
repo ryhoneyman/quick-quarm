@@ -101,7 +101,6 @@ fi
 
 . "$QQDIR/scripts/build-source"
 . "$QQDIR/scripts/install-bin"
-. "$QQDIR/scripts/update-config"
 . "$QQDIR/scripts/install-systemd"
 
 printf "
