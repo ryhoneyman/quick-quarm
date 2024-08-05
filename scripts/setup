@@ -7,7 +7,7 @@ if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
     exit
 else
     . $SCRIPTDIR/../lib/qq-functions
-    load_variables 
+    load_variables "init"
 fi
 
 ### Main ###=======================================================

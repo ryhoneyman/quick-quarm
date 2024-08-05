@@ -18,6 +18,8 @@ if [ -z "$PUBLICIP" ]; then
     export PUBLICIP=$HOSTIP
 fi
 
+echo "QQUSER = $QQUSER"
+
 log "CONFIG" "Updating eqemu_config.json"
 exec_cmd_as $QQUSER "envsubst < $TEMPLATE_EQEMUCONFIG > $QQDIR/bin/eqemu_config.json"
 

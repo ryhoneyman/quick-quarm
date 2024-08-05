@@ -12,8 +12,6 @@ fi
 
 ### Main ###=======================================================
 
-SOURCEDIR="$QQDIR/source"
-
 if [ "$OPT_CLEAN" = true ]; then
     log "SOURCE" "Cleaning repos..."
     exec_cmd_as $QQUSER "rm -rf $SOURCEDIR"

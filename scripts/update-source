@@ -12,6 +12,10 @@ fi
 
 ### Main ###=======================================================
 
+if [ ! -d $SERVERDIR ] || [ ! -d $QUESTDIR ] || [ ! -d $MAPSDIR ]; then
+    . "$QQDIR/scripts/download-source"
+fi
+
 log "SOURCE" "Verifying source directory exists"
 exec_cmd_as $QQUSER "mkdir -p $QQDIR/source"
 
@@ -19,18 +23,18 @@ pushd .
 
 if [ $SERVERREPO = $DEFAULT_SERVERREPO ]; then
     log "SOURCE" "Updating server repo"
-    cd $QQDIR/source/EQMacEmu
+    cd $SERVERDIR
     exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
 else
     log "SOURCE" "Not updating custom source repo"
 fi
 
 log "SOURCE" "Updating quests repo"
-cd $QQDIR/source/quests
+cd $QUESTSDIR
 exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
 
 log "SOURCE" "Updating maps repo"
-cd $QQDIR/source/Maps
+cd $MAPSDIR
 exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
 
 popd

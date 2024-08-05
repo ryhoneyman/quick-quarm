@@ -1,6 +1,7 @@
 # Main variables
 export SCRIPTDIR=${BASH_SOURCE%/*}
 export QQDIR=$(dirname -- $(realpath $SCRIPTDIR))
+export ENVFILE="$QQDIR/etc/.env"
 
 export MYSQLBIN="/usr/bin/mysql"
 
@@ -20,7 +21,10 @@ export TEMPLATE_LOGININI="$QQDIR/files/login.json.tmpl"
 # Common variables
 export DBDIR="$QQDIR/db"
 export FILESDIR="$QQDIR/files"
+export SOURCEDIR="$QQDIR/source"
 export SERVERDIR="$QQDIR/source/EQMacEmu"
+export QUESTSDIR="$QQDIR/source/quests"
+export MAPSDIR="$QQDIR/source/maps"
 export DBDUMPDIR="$SERVERDIR/utils/sql/database_full"
 
 
@@ -97,17 +101,17 @@ exec_cmd_as() {
 }
 
 write_variables() {
-    ENVFILE=$QQDIR/etc/.env
-
     printf "\nWriting configuration to $ENVFILE\n"
     exec_cmd_as $QQUSER "printf \"export QQDIR='$QQDIR'\nexport QQUSER='$QQUSER'\nexport SERVERREPO='$SERVERREPO'\nexport DBHOST=$DBHOST\nexport DBNAME=$DBNAME\nexport DBUSER=$DBUSER\nexport DBPASS=$DBPASS\nexport HOSTIP=$HOSTIP\nexport PUBLIC=$PUBLIC\nexport PUBLICIP=$PUBLICIP\nexport WORLDKEY=$WORLDKEY\" > $ENVFILE" "nolog"
 }
 
 load_variables() {
-    ENVFILE="$QQDIR/etc/.env"
+    OPTIONS=$1
     if [ -f $ENVFILE ]; then
         source $ENVFILE
         export MYSQLCS="-u$DBUSER -p$DBPASS $DBNAME"
+    elif [[ "$OPTIONS" != "init" ]]; then
+        printf "\nCannot find configuration files, please run setup first\n\n"
     fi
 }
 
