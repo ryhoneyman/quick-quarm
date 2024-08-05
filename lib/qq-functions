@@ -24,7 +24,7 @@ export FILESDIR="$QQDIR/files"
 export SOURCEDIR="$QQDIR/source"
 export SERVERDIR="$QQDIR/source/EQMacEmu"
 export QUESTSDIR="$QQDIR/source/quests"
-export MAPSDIR="$QQDIR/source/maps"
+export MAPSDIR="$QQDIR/source/Maps"
 export DBDUMPDIR="$SERVERDIR/utils/sql/database_full"
 
 
