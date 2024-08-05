@@ -16,8 +16,7 @@ get_options "$@"
 
 pushd .
 
-BINDIR="$QQDIR/bin"
-SERVERDIR=$([ ! -z "$OPT_DIR" ] && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu")
+SERVERDIR=$([ ! -z "$OPT_DIR" ] && echo "$OPT_DIR" || echo "$SERVERDIR")
 
 if [ ! -d "$BINDIR" ]; then
     log "BUILD" "Directory $BINDIR doesn't exist, creating it."
@@ -56,5 +55,6 @@ exec_cmd_as $QQUSER "cp $SERVERDIR/loginserver/login_util/*.conf ."
 exec_cmd_as $QQUSER "cp $SERVERDIR/utils/patches/*.conf ."
 
 . "$QQDIR/scripts/update-config"
+. "$QQDIR/scripts/update-permissions"
 
 popd

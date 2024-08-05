@@ -30,7 +30,7 @@ fi
 printf "\nBeginning update:\n"
 
 . "$QQDIR/scripts/update-permissions"
-. "$QQDIR/scripts/update-source"
+. "$QQDIR/scripts/update-source" "$@"
 . "$QQDIR/scripts/update-database"
 . "$QQDIR/scripts/build-source" "$@"
 . "$QQDIR/scripts/install-bin" "$@"

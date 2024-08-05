@@ -21,6 +21,7 @@ export TEMPLATE_LOGININI="$QQDIR/files/login.json.tmpl"
 # Common variables
 export DBDIR="$QQDIR/db"
 export FILESDIR="$QQDIR/files"
+export BINDIR="$QQDIR/bin"
 export SOURCEDIR="$QQDIR/source"
 export SERVERDIR="$QQDIR/source/EQMacEmu"
 export QUESTSDIR="$QQDIR/source/quests"
@@ -134,7 +135,8 @@ get_options() {
     export OPT_CLEAN=false
     export OPT_CORES=false
     export OPT_DIR=''
-    while getopts ":dvfchj:r:" opt ; do
+    export OPT_KEEP=false
+    while getopts ":dvfchj:r:k" opt ; do
         export OPT_OPTS=true
         case "$opt" in
             d)
@@ -154,6 +156,9 @@ get_options() {
                 ;;
             r)
                 export OPT_DIR=$OPTARG
+                ;;    
+            k)
+                export OPT_KEEP=true
                 ;;    
             h)
                 usage

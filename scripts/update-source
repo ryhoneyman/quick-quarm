@@ -12,6 +12,8 @@ fi
 
 ### Main ###=======================================================
 
+get_options "$@"
+
 if [ ! -d $SERVERDIR ] || [ ! -d $QUESTDIR ] || [ ! -d $MAPSDIR ]; then
     . "$QQDIR/scripts/download-source"
 fi
@@ -24,17 +26,29 @@ pushd .
 if [ $SERVERREPO = $DEFAULT_SERVERREPO ]; then
     log "SOURCE" "Updating server repo"
     cd $SERVERDIR
-    exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
+    if [ "$OPT_KEEP" = true ]; then
+        exec_cmd_as $QQUSER "git pull"
+    else
+        exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
+    fi
 else
     log "SOURCE" "Not updating custom source repo"
 fi
 
 log "SOURCE" "Updating quests repo"
 cd $QUESTSDIR
-exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
+if [ "$OPT_KEEP" = true ]; then
+    exec_cmd_as $QQUSER "git pull"
+else
+    exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
+fi
 
 log "SOURCE" "Updating maps repo"
 cd $MAPSDIR
-exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
+if [ "$OPT_KEEP" = true ]; then
+    exec_cmd_as $QQUSER "git pull"
+else
+    exec_cmd_as $QQUSER "git reset --hard origin/main; git pull"
+fi
 
 popd
