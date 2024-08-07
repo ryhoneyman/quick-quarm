@@ -55,6 +55,9 @@ exec_cmd_as $QQUSER "cp $SERVERDIR/loginserver/login_util/*.conf ."
 exec_cmd_as $QQUSER "cp $SERVERDIR/utils/patches/*.conf ."
 
 . "$QQDIR/scripts/update-config"
-. "$QQDIR/scripts/update-permissions"
+
+if [ "$QQUSER" = "root" ]; then
+    . "$QQDIR/scripts/update-permissions"
+fi
 
 popd
