@@ -56,7 +56,7 @@ exec_cmd_as $QQUSER "cp $SERVERDIR/utils/patches/*.conf ."
 
 . "$QQDIR/scripts/update-config"
 
-if [ "$QQUSER" = "root" ]; then
+if [ "$EUID" -eq 0 ]; then
     . "$QQDIR/scripts/update-permissions"
 fi
 
