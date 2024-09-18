@@ -1,7 +1,6 @@
 # Quick Quarm EQ
 <h3>About</h3>
 <p>Are you a player on Secret's Project Quarm Everquest server?  Have you ever wanted to load up your own PQ server for personal use or to play with friends?  Are you a developer in the PQ universe and want to test out patches, make game changes, or just verify mechanics?  It sounds like Quick Quarm might be the tool for you.
-<p>If you are like me, I wanted to get a server up and running and tried several different approaches that all lead to dead ends.  The EQEmu server install guide noted in our PQ repo worked, and the interface is beautiful, but it's not compatible with PQ. 
 
 <p>If you want to try an easy to deploy, containerize version of Project Quarm, I encourage you to check out EQMacDocker.  It works great and it's simply to use.
 
