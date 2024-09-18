@@ -1,19 +1,21 @@
 # Quick Quarm EQ
 <h3>About</h3>
 <p>Are you a player on Secret's Project Quarm Everquest server?  Have you ever wanted to load up your own PQ server for personal use or to play with friends?  Are you a developer in the PQ universe and want to test out patches, make game changes, or just verify mechanics?  It sounds like Quick Quarm might be the tool for you.
-<p>If you are like me, I wanted to get a server up and running and tried several different approaches that all lead to dead ends.  The EQEmu server install guide noted in our PQ repo worked, and the interface is beautiful, but it's not compatible with PQ.  
-<p>EQMacDocker worked great, install went smooth, but I noticed several things that didn't work for me as a developer.  
-<p>First, the entire docker based system added a tremendous amount of overhead whenever I made a minor code change.  Rebuilding all of the docker images means starting from scratch and this was extremely time consuming and resource wasteful.  <br><ins>Quick Quarm only rebuilds the affected parts of the code</ins>.  
-<p>Second, I wanted a system I could stop and start services easily after making changes.  With docker, there's atomic processes running in containers that have to be managed discretely instead of using systemd to control service dependencies.  The current implementation of docker containers causes race conditions where dependencies are not considered correctly leading to stalled server starting.  <br><ins>Quick Quarm performs host control over properly ordered service starts from a unified systemd process</ins>.  
-<p>Third, the docker solution as presented is not started on server up and is launched as an interactive process in the foreground.  It could be configured to detach and start on system start, but that's up to the user to figure out.  <br><ins>Quick Quarm starts when the server starts automatically in the background</ins>.  
-<p>Quick Quarm does require that you have a persistent host, but you would need that to run the docker daemon anyway.  I think this solution fits the needs of most moderately tech capable people who just want a quick Quarm server to play or seasoned developers who want to dive into the code and give back to the community.
+<p>If you are like me, I wanted to get a server up and running and tried several different approaches that all lead to dead ends.  The EQEmu server install guide noted in our PQ repo worked, and the interface is beautiful, but it's not compatible with PQ. 
+
+<p>If you want to try an easy to deploy, containerize version of Project Quarm, I encourage you to check out EQMacDocker.  It works great and it's simply to use.
+
+<p>However, if you're doing Project Quarm development, I would would say the docker based system will add some overhead whenever you make a minor code change.  Rebuilding all of the docker images means starting from scratch.<br><ins>Quick Quarm only rebuilds the affected parts of the code</ins>.  
+<p>I also wanted a system I could stop and start services easily after making changes.  With the docker platform, there's atomic processes running in containers that have to be managed discretely instead of using systemd to control service dependencies on a single host.<br><ins>Quick Quarm performs host control over ordered service starts from a unified systemd process and starts when the host is brought up automatically</ins>.  
+
+<p>Quick Quarm does require that you have a persistent host.  I think this solution fits the needs of most people who just want a quick Quarm server to play or seasoned developers who want to dive into the code and give back to the community.
 
 <h3>Notes</h3>
 
 
 <h3>Instructions</h3>
 <ul>
-  <li>Create an Ubuntu 22.04 LTS WSL2, VM or persistent container (such as LXC).  <i>[have not tested other OSs]</i>
+  <li>Create an Ubuntu 22.04 LTS WSL2, VM or persistent container (such as LXC).  <i>[have not tested other OSs, WSL2 required several modifications to work]</i>
   <li>Install with any user that has sudo privilege.
   <li>Clone this repo to the directory of your choosing: <b>git clone https://github.com/ryhoneyman/quick-quarm.git</b>
   <li>Change to the quick-quarm repo directory and run <b>sudo ./scripts/setup</b>
