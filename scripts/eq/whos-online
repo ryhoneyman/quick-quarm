@@ -1,0 +1,21 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+get_eq_options "$@"
+
+OUTPUT=$(mysql_exec_as $USER "SELECT id,name,charname FROM account where active = 1" "nolog,retout")
+
+if [ ! -z "$OUTPUT" ]; then
+    echo $OUTPUT | xargs -n 3 | awk '{print $0}'
+fi
