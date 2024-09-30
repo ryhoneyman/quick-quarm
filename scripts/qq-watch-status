@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+watch -n 1 $SCRIPTDIR/qq-status
