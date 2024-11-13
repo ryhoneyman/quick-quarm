@@ -26,6 +26,7 @@ fi
 cd $SERVERDIR
 
 NPROC=$(nproc)
+MEMPROC=$(awk '/MemTotal/ {print $2 / 1024 / 1024 / 2}' /proc/meminfo)
 
 if [ "$OPT_CORES" != false ] && [ ! -z "$OPT_CORES" ]; then
     log "BUILD" "Forcing CPU cores to $OPT_CORES"
@@ -35,6 +36,11 @@ fi
 if [[ "$NPROC" -gt 8 ]]; then
     log "BUILD" "Locking excessive CPU cores to only 8"
     NPROC=8
+fi
+
+if [[ "$NPROC" -gt "$MEMPROC" ]]; then
+    log "BUILD" "Memory does not support $NPROC CPUs, forcing CPU cores to $MEMPROC"
+    NPROC=$MEMPROC
 fi
 
 log "BUILD" "Using source in $SERVERDIR"
