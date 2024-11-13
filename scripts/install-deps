@@ -20,7 +20,7 @@ export DEBIAN_FRONTEND=noninteractive
 log "INSTALL" "Updating system..."
 exec_cmd_as "root" "/usr/bin/apt-get update"
 log "INSTALL" "Installing dependencies..."
-exec_cmd_as "root" "/usr/bin/apt-get -y install git build-essential cmake libboost-dev libmariadb-dev liblua5.1-dev uuid-dev mariadb-server uuid-runtime"
+exec_cmd_as "root" "/usr/bin/apt-get -y install git build-essential cmake libboost-dev libmariadb-dev liblua5.1-dev uuid-dev mariadb-server uuid-runtime dnsutils"
 
 log "INSTALL" "Setting up MySQL user..."
 exec_cmd_as "root" "$MYSQLBIN <<< \"CREATE DATABASE IF NOT EXISTS $DBNAME\""
