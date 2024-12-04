@@ -26,7 +26,7 @@ fi
 cd $SERVERDIR
 
 NPROC=$(nproc)
-MEMPROC=$(awk '/MemTotal/ {print $2 / 1024 / 1024 / 2}' /proc/meminfo)
+MEMPROC=$(awk '/MemTotal/ {printf("%d", $2 / 1024 / 1024 / 2)}' /proc/meminfo)
 
 if [ "$OPT_CORES" != false ] && [ ! -z "$OPT_CORES" ]; then
     log "BUILD" "Forcing CPU cores to $OPT_CORES"
