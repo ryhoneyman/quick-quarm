@@ -1,0 +1,65 @@
+#!/bin/bash
+
+SCRIPTDIR=${BASH_SOURCE%/*}
+
+if [ ! -f $SCRIPTDIR/../lib/qq-functions ]; then
+    echo "Cannot load libraries"
+    exit
+else
+    . $SCRIPTDIR/../lib/qq-functions
+    load_variables
+fi
+
+### Main ###=======================================================
+
+get_options "$@"
+
+pushd .
+
+SERVERDIR=$([ ! -z "$OPT_DIR" ] && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu/utils/sql/git/required")
+
+if [ ! -d "$SERVERDIR" ]; then
+    log "SCHEMA" "Directory $SERVERDIR doesn't exist"
+    exit 1
+fi
+
+CURRENTDBFILE=$(find $DBDIR -name "quarm_*.sql" -print 2>/dev/null)
+
+if [ -z "$CURRENTDBFILE" ]; then
+    log "SCHEMA" "No current database file found, skipping schema update"
+    exit 0
+fi
+
+CURRENTDBDATE=$(echo "$CURRENTDBFILE" | sed 's/.*quarm_//' | awk -F'-' '{printf "%s%02d%02d", $1, $2, $3}')
+
+log "SCHEMA" "Our installed database: $CURRENTDBFILE ($CURRENTDBDATE)"
+
+SQLFILLES=($(ls -1 $SERVERDIR/*.sql))
+
+if [ ${#SQLFILLES[@]} -eq 0 ]; then
+    log "SCHEMA" "No schema update files found to apply"
+    exit 0
+fi
+
+APPLIEDCOUNT=0
+
+for SQLFILE in "${SQLFILLES[@]}"; do
+    BASEFILE=$(basename "$SQLFILE")
+    FILEDATE=$(echo "$BASEFILE" | awk -F'_' '{printf "%s%02d%02d", $1, $2, $3}')
+
+    if [ "$FILEDATE" -gt "$CURRENTDBDATE" ]; then
+        
+        APPLIEDCOUNT=$((APPLIEDCOUNT + 1))
+        IMPORTRC=$(mysql_import_as $QQUSER "$SQLFILE" "nolog,noexit,retrc")
+        OUTCOME=$([ "$IMPORTRC" = "0" ] && echo "success" || echo "not required")
+        log "SCHEMA" "Processing $BASEFILE [$OUTCOME]"
+    fi
+done
+
+if [ $APPLIEDCOUNT -eq 0 ]; then
+    log "SCHEMA" "No schema update files matched filter to apply"
+    exit 0
+fi
+
+
+popd
