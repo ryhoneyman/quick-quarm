@@ -16,7 +16,7 @@ get_options "$@"
 
 pushd .
 
-SERVERDIR=$([ ! -z "$OPT_DIR" ] && echo "$OPT_DIR" || echo "$QQDIR/source/EQMacEmu/utils/sql/git/required")
+SERVERDIR="$QQDIR/source/EQMacEmu/utils/sql/git/required"
 
 if [ ! -d "$SERVERDIR" ]; then
     log "SCHEMA" "Directory $SERVERDIR doesn't exist"
